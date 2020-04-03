@@ -1,0 +1,355 @@
+<div class="page" ng-controller="voucherTopupCtrl">
+	<form class="form-horizontal formFadeIn" role="form" ng-hide="showList">
+		<section class="panel panel-default">
+
+			<!--Start topup type selection-->
+
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span> Topup
+					List</strong>
+				<button type="button" class="btn btn-primary pull-right"
+					tooltip-placement="left" tooltip="Generate Topup"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="generateTopup()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12"
+					style="max-height: 400px; overflow-y: auto;">
+
+					<table
+						class="table table-bordered table-striped table-responsive input-sm">
+						<thead>
+							<tr>
+
+								<th style="width: 10px" ng-hide="true">
+									<div class="th">Id</div>
+								</th>
+								<th>
+									<div class="th">Beneficiary Group Name</div>
+								</th>
+								<th>
+									<div class="th">No of Beneficiaries</div>
+								</th>
+								<th>
+									<div class="th">Last Topup</div>
+								</th>
+								<th>
+									<div class="th">House Hold Value</div>
+								</th>
+								<th>
+									<div class="th">Topup Value</div>
+								</th>
+								<th>
+									<div class="th">Topup Status</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr data-ng-repeat="bg in topups">
+
+								<td ng-hide="true">{{bg.bnfGrpId}}</td>
+								<td>{{bg.bnfGrpName}}</td>
+								<td>{{bg.noOfBnfs}}</td>
+								<td>{{bg.lastTopup}}</td>
+								<td>{{bg.houseHoldValue}}</td>
+								<td>{{bg.topupValueDisplay}}</td>
+
+								<td>{{bg.topupStatus}}</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+
+		</section>
+
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="showTopupCreation">
+		<section class="panel panel-default">
+
+			<!--Start topup type selection-->
+
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					VOUCHER TOPUP </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+
+					<div class="form-group col-sm-6 noPadding"
+						style="padding-right: 1px">
+						<label for="topupTypeSelect"
+							class="col-sm-4 control-label input-sm"
+							style="text-align: right;">Select Topup method</label>
+
+						<div class="col-sm-8 noPadding">
+							<select style="width: 100%" ui-select2="merchantSelect"
+								ng-model="topupType" id="topupTypeSelect"
+								ng-disabled="isDisabled">
+								<option data-ng-repeat="topup in topupTypes"
+									value="{{topup.type}}">{{topup.name}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group col-sm-6 noPadding"
+						ng-show="topupType=='PROG'" style="padding-right: 1px">
+						<label for="programmeSelect"
+							class="col-sm-4 control-label input-sm"
+							style="text-align: right;">Select Programme</label>
+
+						<div class="col-sm-8 noPadding">
+							<select style="width: 100%" ui-select2="programmeSelect"
+								ng-model="programmeSelect" id="programmeSelect">
+								<option data-ng-repeat="programme in programmes"
+									value="{{programme.programmeId}}">{{programme.programmeDesc}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--End topup type selection-->
+			<!--start Retailer selection-->
+			<div ng-show="showRetailers" style="padding-left: 10px; width: 99%">
+				<section class="panel panel-default">
+					<div class="panel-heading input-sm">
+						<strong><span class="glyphicon glyphicon-th input-sm"></span>
+							Retailers Information</strong>
+					</div>
+					<div class="panel-body">
+						<div class="form-group col-sm-12"
+							style="max-height: 400px; overflow-y: auto;">
+
+							<table
+								class="table table-bordered table-striped table-responsive input-sm">
+								<thead>
+									<tr>
+										<th><input type="checkbox" ng-model="allRetailerSelected"
+											ng-change="selectAllRetailers()"></th>
+										<th style="width: 10px" ng-hide="true">
+											<div class="th">Id</div>
+										</th>
+										<th>
+											<div class="th">Retailer Name</div>
+										</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr data-ng-repeat="retailer in retailers">
+										<td><input type="checkbox" ng-model="retailer.isActive" ng-disabled="true"
+											ng-checked="retailer.isActive"
+											ng-change="selectRetailer($index)"></td>
+										<td ng-hide="true">{{retailer.agentId}}</td>
+										<td>{{retailer.agentDesc}}</td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+
+				</section>
+			</div>
+			<!--end Retailer selection-->
+			<!--start programme selection-->
+			<div
+				ng-show="showProgrammes && !showBeneficiaryGroups && !showBeneficiary">
+				<div class="panel-heading input-sm">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Programme Information</strong>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-sm-12"
+						style="max-height: 400px; overflow-y: auto;">
+
+						<table
+							class="table table-bordered table-striped table-responsive input-sm">
+							<thead>
+								<tr>
+									<th><input type="checkbox" ng-model="allItemsSelected"
+										ng-change="selectAllProgrammes()"></th>
+									<th style="width: 10px" ng-hide="true">
+										<div class="th">Id</div>
+									</th>
+									<th>
+										<div class="th">Programme Name</div>
+									</th>
+									<th>
+										<div class="th">No of Beneficiaries</div>
+									</th>
+									<th>
+										<div class="th">Last Topup</div>
+									</th>
+									<th>
+										<div class="th">House Hold Value</div>
+									</th>
+									<th ng-hide="true">
+										<div class="th">Topup Value</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr data-ng-repeat="programme in programmes">
+									<td><input type="checkbox" ng-model="programme.isActive"
+										ng-checked="programme.isActive"
+										ng-change="selectProgramme($index)"></td>
+									<td ng-hide="true">{{programme.programmeId}}</td>
+									<td>{{programme.programmeDesc}}</td>
+									<td>{{programme.noOfBnfs}}</td>
+									<td>{{programme.lastTopup}}</td>
+									<td><input type="number" class="form-control input-sm"
+										id="inpBgValue" placeholder="Value"
+										ng-change="updateTopupValue(bg)" ng-model="bg.houseHoldValue"></td>
+									<td ng-hide="true">{{programme.topupValue}}</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+
+			</div>
+			<!--end programme selection-->
+
+
+			<!--start beneficiary group selection-->
+			<div
+				ng-show="showBeneficiaryGroups && !showProgrammes && !showBeneficiary">
+				<div class="panel-heading input-sm">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Beneficiary Group Information</strong>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-sm-12"
+						style="max-height: 400px; overflow-y: auto;">
+
+						<table
+							class="table table-bordered table-striped table-responsive input-sm">
+							<thead>
+								<tr>
+									<th><input type="checkbox" ng-model="allBgItemsSelected"
+										ng-change="selectAllBgs()"></th>
+									<th style="width: 10px" ng-hide="true">
+										<div class="th">Id</div>
+									</th>
+									<th>
+										<div class="th">Beneficiary Group Name</div>
+									</th>
+									<th>
+										<div class="th">No of Beneficiaries</div>
+									</th>
+									<th>
+										<div class="th">Last Topup</div>
+									</th>
+									<th>
+										<div class="th">House Hold Value</div>
+									</th>
+									<th>
+										<div class="th">Topup Value</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr data-ng-repeat="bg in beneficiaryGroups">
+									<td><input type="checkbox" ng-model="bg.isActive"
+										ng-checked="bg.isActive" ng-change="selectBg($index)"></td>
+									<td ng-hide="true">{{bg.bnfGrpId}}</td>
+									<td>{{bg.bnfGrpName}}</td>
+									<td>{{bg.noOfBnfs}}</td>
+									<td>{{bg.lastTopup}}</td>
+									<td><input type="number" class="form-control input-sm"
+										id="inpBgValue" placeholder="Value"
+										ng-change="updateTopupValue(bg)" ng-model="bg.houseHoldValue"></td>
+									<td>{{bg.topupValueDisplay}}</td>
+
+
+								</tr>
+
+								<tr>
+									<td colspan="5"></td>
+
+
+
+									<td>Total: {{total | number : fractionSize}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+
+			</div>
+			<!--end beneficiary group selection-->
+
+
+			<!--start beneficiary selection-->
+			<div
+				ng-show="showBeneficiary && !showProgrammes && !showBeneficiaryGroups">
+				<div class="panel-heading input-sm">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Beneficiary Information</strong>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label for="cardNumber" class="col-sm-2 control-label input-sm"
+							style="text-align: right;">Card Number</label>
+						<div class="col-sm-8">
+							<input type="text" id="cardNumber" class="form-control input-sm"
+								placeholder="Card Number" style="width: 100%"
+								ng-Model="cardNumber" required="true">
+						</div>
+						<div class="col-sm-2" ng-hide="true">
+							<button type="submit"
+								class="btn btn-w-md btn-gap-v btn-info input-sm"
+								ng-click="validateCardNumber(accountNumber)">
+								<span class="glyphicon glyphicon-barcode"></span> Verify
+							</button>
+						</div>
+					</div>
+					<!--<div class="form-group" ng-hide="showName">-->
+					<!--<label for="accountName" class="col-sm-2 control-label input-sm">Account Name</label>-->
+					<!--<div class="col-sm-10">-->
+					<!--<input type="text" class="form-control input-sm" id="accountName"-->
+					<!--placeholder="Beneficiary Name" ng-model="firstname" maxlength="35" required >-->
+
+					<!--</div>-->
+					<!--</div>-->
+
+				</div>
+			</div>
+			<!--end beneficiary selection-->
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+
+					<button type="button" class="btn btn-info input-sm"
+						style="width: 120px" ng-click="doTopUp()">
+						<span class="glyphicon glyphicon-arrow-right"> Topup </span>
+					</button>
+
+
+					<button type="button" class="btn btn-warning input-sm"
+						style="width: 100px" ng-click="cancelTopup()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button>
+				</div>
+			</div>
+
+		</section>
+	</form>
+
+</div>

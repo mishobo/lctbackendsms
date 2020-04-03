@@ -1,0 +1,174 @@
+<div class="page" ng-controller="organizationsCtrl">
+	<form role="form" class="formFadeIn" ng-hide="organizationEditMode == true">
+	
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>
+					Insurance Provider's List</strong>
+				<button type="button" class="btn btn-primary pull-right input-sm"
+					tooltip-placement="left" tooltip="Create New Organization"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addOrganization()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span class="input-sm"> Showing
+							{{filteredOrganizations.length}}/{{organizations.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('orgId') "
+									data-ng-class="{active: row == 'orgId'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-orgId') "
+									data-ng-class="{active: row == '-orgId'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Insurance Provider Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('orgCode') "
+									data-ng-class="{active: row == 'orgCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-orgCode') "
+									data-ng-class="{active: row == '-orgCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Insurance Provider Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('orgName') "
+									data-ng-class="{active: row == 'orgName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-orgName') "
+									data-ng-class="{active: row == '-orgName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td  colspan="5" align="center" ng-show="filteredOrganizations.length==0"><b>No data</b></td></tr>
+					<tr data-ng-repeat="organization in currentPageOrganizations">
+						<td>{{organization.orgId}}</td>
+						<td>{{organization.orgCode}}</td>
+						<td>{{organization.orgName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top" tooltip="Modify {{organization.orgName}}"
+								style="height: 25px; width: 60px;" ng-click="editOrganization(organization)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredOrganizations.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="organizationEditMode == false" ng-model="objOrg">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					Organization Creation</strong>
+			</div>
+			<div class="panel-body">
+			<div class="form-group">
+					<label for="inpOrganizationName" class="col-sm-2 control-label input-sm">Organization Code</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpOrgCode" placeholder="Organization Code"
+							ng-model="objOrg.orgCode" maxlength=6>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="inpOrganizationName" class="col-sm-2 control-label input-sm"> Organization Name</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpOrganizationName" placeholder="Organization Name"
+							ng-model="objOrg.orgName">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpOrganizationName" class="col-sm-2 control-label input-sm">Contact Person</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpOrgPer" placeholder="Contact Person"
+							ng-model="objOrg.orgContactPer">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpOrganizationName" class="col-sm-2 control-label input-sm">Contact No</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpcontactNo" placeholder="Format 07xxxxxxxx"
+							ng-model="objOrg.orgContactNo">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpOrganizationName" class="col-sm-2 control-label input-sm">Email</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpOrgEmail" placeholder="Email"
+							ng-model="objOrg.orgEmail">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updOrganization()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="calcelOrganization()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

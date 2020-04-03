@@ -1,0 +1,174 @@
+<div class="page" ng-controller="areasCtrl">
+	<form role="form" class="formFadeIn" ng-hide="areaEditMode == true">
+
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>
+					County's List</strong>
+				<button type="button" class="btn btn-primary pull-right input-sm"
+					tooltip-placement="left" tooltip="Create New County"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addArea()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span class="input-sm"> Showing
+							{{filteredAreas.length}}/{{areas.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								County Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('areaCode') "
+									data-ng-class="{active: row == 'areaCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-areaCode') "
+									data-ng-class="{active: row == '-areaCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								County Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('areaName') "
+									data-ng-class="{active: row == 'areaName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-areaName') "
+									data-ng-class="{active: row == '-areaName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Region <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('zoneName') "
+									data-ng-class="{active: row == 'zoneName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-zoneName') "
+									data-ng-class="{active: row == '-zoneName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="area in currentPageAreas">
+						<td>{{area.count}}</td>
+						<td>{{area.areaCode}}</td>
+						<td>{{area.areaName}}</td>
+						<td>{{area.zoneName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top" tooltip="Modify {{area.areaName}}"
+								style="height: 25px; width: 60px;" ng-click="editArea(area)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredAreas.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="areaEditMode == false">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					{{header}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="inpAreaCode" class="col-sm-2 control-label input-sm">County Code</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="inpAreaCode" maxlength="4"
+							placeholder="Code" ng-model="areaCode" ng-disabled="isExisting">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpAreaName" class="col-sm-2 control-label input-sm">County Name</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="inpAreaName" maxlength="50"
+							placeholder="Name" ng-model="areaName">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpAreaName" class="col-sm-2 control-label input-sm">Region</label>
+
+					<div class="col-sm-10">
+						<select style="width: 100%" ui-select2="" ng-model="zoneSelect"
+							id="zoneSelect">
+							<option data-ng-repeat="zone in zones"
+								ng-selected="{{zone.zoneId}}" value="{{zone.zoneId}}">{{zone.zoneName}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="active" class="col-sm-2 control-label input-sm">Active</label>
+
+					<div class="col-sm-10">
+						<label> <input type="checkbox" id="active"
+							ng-model="active" style="margin-top: 10px">
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updArea()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="calcelArea()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

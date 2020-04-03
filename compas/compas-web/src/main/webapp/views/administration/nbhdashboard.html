@@ -1,0 +1,101 @@
+<div class="page page-dashboard" ng-controller="nbhdashBoardCtrl">
+	<div class="row">
+		<div class="col-lg-3 col-xsm-6">
+			<div class="panel mini-box">
+				<span class="box-icon bg-info"> <i class="fa fa-male"></i>
+				</span>
+				<div class="box-info">
+					<p class="size-h2">{{data.bnfCount}}</p>
+					<p class="text-muted">
+						<span data-i18n="Beneficiaries">Beneficiaries</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-xsm-6">
+			<div class="panel mini-box">
+				<span class="box-icon bg-success"> <i class="fa fa-users"></i>
+				</span>
+				<div class="box-info">
+					<p class="size-h2">{{data.systemUsers}}</p>
+					<p class="text-muted">
+						<span data-i18n="System users">System users</span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-xsm-6">
+			<div class="panel mini-box">
+					<span class="box-icon bg-success"> <i class="fa fa-users"></i></span>
+				<div class="box-info">
+					<p class="size-h2">{{data.posUsers}}</p>
+					<p class="text-muted">
+						<span data-i18n="Device users">Device users</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-xsm-6">
+			<div class="panel mini-box">
+				<span class="box-icon bg-danger"> <i class="glyphicon glyphicon-phone"></i>
+				</span>
+				<div class="box-info">
+					<p class="size-h2">{{data.deviceCount}}</p>
+					<p class="text-muted">
+						<span data-i18n="Devices">Devices</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" ng-hide="true">
+		<div class="col-md-6">
+			<section class="panel panel-default">
+				<div class="panel-heading">
+					<strong><span class="glyphicon glyphicon-th"></span> <span
+						data-i18n="Overall Commodity Collections"></span></strong>
+				</div>
+				<div class="panel-body">
+					<div data-flot-chart data-data="pieChart.data"	data-options="pieChart.options"
+						style="width: 100%; height: 400px;"></div>
+				</div>
+
+			</section>
+		</div>
+
+		<div class="col-md-6">
+				<section class="panel panel-default">
+					<div class="panel-heading">
+						<strong><span class="glyphicon glyphicon-th"></span> 
+						<span data-i18n="RETAILER COLLECTIONS"></span></strong>
+					</div>
+					<div class="panel-body" agentchart style="width: 100%; height: 425px;">
+						<div  data-flot-chart data-data="data"	data-options="donutChart2.options" ></div>
+					</div>
+				</section>
+			
+
+		</div>
+	</div>
+	<div class="row" ng-hide="true">
+		<div class="col-md-12">
+			<section class="panel panel-default">
+				<div class="panel-heading">
+					<strong><span class="glyphicon glyphicon-th"></span> <span
+						data-i18n="Transactions"></span></strong>
+				</div>
+				<div class="panel-body" data-ng-controller="dashBoardCtrl">
+
+					<div line-Chart data-data="data" data-type="line" data-xkey="year"
+						data-ykeys='["a", "b", "c"]'
+						data-labels='["Load", "Purchase", "Total"]'
+						data-line-colors='["#FF7857","#FDD764","#A3C86D"]'
+						data-line-width="2"></div>
+				</div>
+			</section>
+		</div>
+
+	</div>
+</div>

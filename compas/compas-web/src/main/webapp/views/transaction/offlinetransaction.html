@@ -1,0 +1,181 @@
+<style>
+a:link    {color:green; background-color:transparent; text-decoration:none}
+a:visited {color:blue; background-color:transparent; text-decoration:none}
+a:hover   {color:blue; background-color:transparent; text-decoration:underline}
+a:active  {color:red; background-color:transparent; text-decoration:underline}
+</style>
+<div class="page" ng-controller="offlineTransCtrl">
+	<form class="formFadeIn" role="form" ng-show="showOrg">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Offline Transactions </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<div class="form-group col-sm-6 noPadding"	style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Organization</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2="" ng-change="onOrgChange(orgSelect)" ng-model="orgSelect"
+								id="orgSelect" ng-disabled="isDisabled">
+								<option data-ng-repeat="org in orgs" value="{{org.orgId}}">{{org.orgName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+	<form role="form" class="formFadeIn" ng-show="showSearch">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>Search Member No</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline">
+					<div class="form-group col-sm-12">
+						<label for="memberId" class="col-sm-2 control-label input-sm" style="text-align: right;">Member Number</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control input-sm"
+								placeholder="Member Code" style="width: 100%" ng-Model="memberNo">
+						</div>
+						<div class="col-sm-2">
+							<button type="button"
+								class="btn btn-w-md btn-gap-v btn-info input-sm" ng-click="viewMember(memberNo)">
+								<span class="glyphicon glyphicon-barcode"></span> Search
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+		<form role="form" class="formFadeIn" ng-show="showBasics">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>Basic details</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline">
+					<div class="form-group col-sm-12">
+						<label class="col-sm-2 control-label input-sm" style="text-align: center;">Member Number</label>
+						<label class="col-sm-2 control-label input-sm" style="text-align: center;">{{member.memberNo}}</label>
+					</div>
+				</div>
+				<div class="form-inline">
+					<div class="form-group col-sm-12">
+						<label class="col-sm-2 control-label input-sm" style="text-align: center;">Member Name</label>
+						<label class="col-sm-2 control-label input-sm" style="text-align: center;">{{member.fullName}}</label>
+					</div>
+				</div>
+				<div class="form-inline">
+					<div class="form-group col-sm-12">
+						<label class="col-sm-2 control-label input-sm" style="text-align: center;">Member Scheme</label>
+						<label class="col-sm-2 control-label input-sm" style="text-align: center;">{{member.scheme}}</label>
+					</div>
+				</div>
+			</div>
+			</section>
+			<div class="form-group" ng-show="showNext">
+				<div class="col-sm-offset-2 col-sm-10">
+					 <button type="button" class="btn btn-info input-sm"
+						style="width: 120px" ng-click="getMemberProgrammes()">
+						<span class="glyphicon glyphicon-arrow-right"> Next </span>
+					</button>
+					<button type="button" class="btn btn-warning input-sm"
+						style="width: 100px" ng-click="cancelMember()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button> 
+				</div>
+			</div>
+		
+	</form>
+	<form role="form" class="formFadeIn" ng-show="open">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>Member programmes</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<div class="form-group col-sm-6 noPadding"	style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Service provider</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2="" ng-model="merSelect" >
+								<option data-ng-repeat="mer in merchants" value="{{mer.merchantId}}">{{mer.merchantName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding" ng-show="merSelect >0">
+					<div class="form-group col-sm-6 noPadding"	style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Cover category</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2="" ng-change="onProgrammeChange(programmeSelect)" ng-model="programmeSelect">
+								<option data-ng-repeat="programme in member.programmes" value="{{programme.programmeId}}">{{programme.programmeName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding" ng-show="member.vouchers.length >0">
+					<div class="form-group col-sm-6 noPadding"	style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Benefit basket</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2="" ng-change="onVoucherChange(voucherSelect)" ng-model="voucherSelect">
+								<option data-ng-repeat="voucher in member.vouchers" value="{{voucher}}">{{voucher.voucherName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding" ng-show="vouchers">
+					<div class="form-group col-sm-6 noPadding"	style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Service</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2="" ng-change="onServiceChange(serviceSelect)" ng-model="serviceSelect">
+								<option data-ng-repeat="service in vouchers.services" value="{{service}}">{{service.serviceName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12 noPadding" ng-show="services">
+					<div class="col-sm-12 noPadding">
+						<div class="col-sm-2" style="text-align: right;">
+							<label for="inpMemberNhifNo" class="control-label input-sm">Service balance</label>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberNhifNo" placeholder="NHIF No" ng-model="services.serviceBalance" readonly>
+						</div>
+					</div>
+
+					<div class="col-sm-12 noPadding">
+						<div class="col-sm-2" style="text-align: right;">
+							<label for="inpMemberIdPassPortNo" class="control-label input-sm">Transaction amount</label>
+						</div>
+						<div class="col-sm-4">
+							<input type="text" class="form-control input-sm" ng-model="amount">
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+	</form>
+</div>

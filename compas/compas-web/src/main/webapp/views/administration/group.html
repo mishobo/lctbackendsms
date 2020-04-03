@@ -1,0 +1,276 @@
+<div class="page" ng-controller="groupsCtrl">
+
+	<form role="form" class="formFadeIn" ng-hide="groupEditMode">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Group's List</strong>
+				<button type="button" class="btn btn-primary pull-right"
+					tooltip-placement="left" tooltip="Create New Group"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addGroup()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing {{filteredGroups.length}}/{{groups.length}}
+							entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Group Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('groupCode') "
+									data-ng-class="{active: row == 'groupCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-groupCode') "
+									data-ng-class="{active: row == '-groupCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Group Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('groupFullName') "
+									data-ng-class="{active: row == 'groupFullName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-groupFullName') "
+									data-ng-class="{active: row == '-groupFullName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Group Type <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('grpTypeName') "
+									data-ng-class="{active: row == 'grpTypeName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-grpTypeName') "
+									data-ng-class="{active: row == '-grpTypeName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr><td  colspan="6" align="center" ng-show="filteredGroups.length==0"><b>No data</b></td></tr>
+					<tr data-ng-repeat="group in currentPageGroups">
+						<td>{{group.count}}</td>
+						<td>{{group.groupCode}}</td>
+						<td>{{group.groupName}}</td>
+						<td>{{group.grpTypeName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								style="height: 25px; width: 60px;" tooltip-placement="top"
+								tooltip="Modify {{group.groupName}}" ng-click="editGroup(group)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredGroups.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+
+	<form class="formFadeIn" role="form" ng-hide="!groupEditMode">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					{{groupHeader}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpGroupCode" class="control-label input-sm">Group
+									Code</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									style="width: 100%;" id="inpGroupCode" placeholder="Group Code"
+									ng-model="groupCode" maxlength="4" ng-disabled="isExisting">
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpGroupName" class="control-label input-sm">Group
+									Name</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									style="width: 100%;" id="inpGroupName" placeholder="Group Name"
+									ng-model="groupName">
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpGroupCode" class="control-label input-sm">Group
+									Type</label>
+							</div>
+							<div class="col-sm-8">
+								<select style="width: 100%" ui-select2=""
+									ng-model="grpTypeSelect" id="grpTypeSelect" ng-change="resetAllRights()">
+									<option data-ng-repeat="grpType in grpTypes"
+										ng-selected="{{grpType.grpTypeId}}"
+										value="{{grpType.grpTypeId}}">{{grpType.grpTypeName}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpGroupName" class="control-label input-sm">Group
+									Status</label>
+							</div>
+							<div class="col-sm-8">
+								<label> <input type="checkbox" id="active"
+									ng-model="active" style="margin-top: 10px">
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Grids -->
+				<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px" ng-hide="showRights">
+					<!-- Rights Grid -->
+					<div class="col-sm-12 noPadding" style="padding-left: 5px;">
+						<section class="panel panel-default">
+							<div class="panel-heading input-sm">
+								<strong><span class="glyphicon glyphicon-th"></span>
+									Rights</strong>
+							</div>
+							<div class="panel-body"
+								style="max-height: 400px; overflow-y: auto;">
+								<table
+									class="table table-bordered table-striped table-responsive input-sm">
+									<thead>
+										<tr>
+											<th style="width: 10px">
+												<div class="th">#</div>
+											</th>
+											<th style="width: 260px">
+												<div class="th">Right Name</div>
+											</th>
+
+											<th style="width: 50px">
+												<div class="th">View</div>
+											</th>
+											<th style="width: 50px">
+												<div class="th">Add</div>
+											</th>
+											<th style="width: 50px">
+												<div class="th">Edit</div>
+											</th>
+											<th style="width: 50px">
+												<div class="th">Delete</div>
+											</th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+										<td></td>
+											<td></td>
+											<td style="padding: 1px;">
+											<input type="checkbox" ng-model="allViewRightsSelected" ng-change="selectAllViewRights()">
+											</td>
+											<td style="padding: 1px;">
+											<input type="checkbox" ng-model="allAddRightsSelected" ng-change="selectAllAddRights()">
+											</td>
+											<td style="padding: 1px;">
+											<input type="checkbox" ng-model="allEditRightsSelected" ng-change="selectAllEditRights()">
+											</td>
+											<td style="padding: 1px;">
+											<input type="checkbox" ng-model="allDeleteRightsSelected" ng-change="selectAllDeleteRights()"
+											ng-disabled="true">
+											</td>
+											</tr>
+										<tr data-ng-repeat="right in rights">
+											<td>{{right.rightId}}</td>
+											<td>{{right.rightDisplayName}}</td>
+											<td style="padding: 1px;"><label class=""><input
+													ng-model="right.rightView" type="checkbox"
+													ng-disabled="!right.allowView"></label></td>
+											<td style="padding: 1px;"><label class=""><input
+													ng-model="right.rightAdd" type="checkbox"
+													ng-disabled="!right.allowAdd"></label></td>
+											<td style="padding: 1px;"><label class=""><input
+													ng-model="right.rightEdit" type="checkbox"
+													ng-disabled="!right.allowEdit"></label></td>
+											<td style="padding: 1px;"><label class=""><input
+													ng-model="right.rightDelete" type="checkbox"
+													ng-disabled="!right.allowDelete"></label></td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+					</div>
+
+
+					<!-- Buttons -->
+
+				</div>
+				<div class="form-group col-sm-12 noPadding" style="margin-top: 5px">
+					<button type="button" class="btn btn-success input-sm"
+						style="width: 100px" ng-click="updGroup()"
+						ng-hide="coverCategoryEditMode">
+						<span class="glyphicon glyphicon-ok"> Save </span>
+					</button>
+					<button type="button" class="btn btn-warning input-sm"
+						style="width: 100px" ng-click="cancelGroup()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

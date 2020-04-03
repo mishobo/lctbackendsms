@@ -1,0 +1,295 @@
+<div class="page" ng-controller="productsCtrl">
+	<form class="formFadeIn" role="form">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Scheme </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<div class="form-group col-sm-6 noPadding"
+						style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Select Organization</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2="" ng-change="onOrgChange(orgSelect)"
+								ng-model="orgSelect" id="orgSelect" ng-disabled="isDisabled">
+								<option data-ng-repeat="org in orgs" value="{{org.orgId}}" >{{org.orgName}}</option>
+							</select>
+						</div>
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</section>
+	</form>
+	<form role="form" class="formFadeIn" ng-show="productListMode == true">
+
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>
+					Scheme's List</strong>
+				<button type="button" class="btn btn-primary pull-right input-sm"
+					tooltip-placement="left" tooltip="Create New Scheme"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addProduct()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span class="input-sm"> Showing
+							{{filteredProducts.length}}/{{products.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Scheme Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('productCode') "
+									data-ng-class="{active: row == 'productCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-productCode') "
+									data-ng-class="{active: row == '-productCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Scheme Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('product.productName') "
+									data-ng-class="{active: row == 'product.productName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-product.productName') "
+									data-ng-class="{active: row == '-product.productName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Insurance Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('product.insuranceCode') "
+									data-ng-class="{active: row == 'product.insuranceCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-product.insuranceCode') "
+									data-ng-class="{active: row == '-product.insuranceCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Start Date <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('product.startDate') "
+									data-ng-class="{active: row == 'product.startDate'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-product.startDate') "
+									data-ng-class="{active: row == '-product.startDate'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								End Date <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('product.endDate') "
+									data-ng-class="{active: row == 'product.endDate'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-product.endDate') "
+									data-ng-class="{active: row == '-product.endDate'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Type <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('product.typeName') "
+									data-ng-class="{active: row == 'product.typeName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-product.typeName') "
+									data-ng-class="{active: row == '-product.typeName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Status <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('product.status') "
+									data-ng-class="{active: row == 'product.status'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-product.status') "
+									data-ng-class="{active: row == '-product.status'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td  colspan="8" align="center" ng-show="filteredProducts.length==0"><b>No data</b></td></tr>
+					<tr data-ng-repeat="product in currentPageProducts">
+						<td>{{product.count}}</td>
+						<td>{{product.productCode}}</td>
+						<td>{{product.productName}}</td>
+						<td>{{product.insuranceCode}}</td>
+						<td>{{product.startDate}}</td>
+						<td>{{product.endDate}}</td>
+						<td>{{product.typeName}}</td>
+						<td>{{product.status}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top" tooltip="Modify {{product.productName}}"
+								style="height: 25px; width: 60px;"
+								ng-click="editProduct(product)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredProducts.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-show="productEditMode == true" ng-model="objProduct">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					{{header}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="inpProductCode" class="col-sm-2 control-label input-sm">Scheme
+						Code</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpProductCode" ng-disabled="isExisting"
+							placeholder="Scheme Code" ng-model="objProduct.productCode" maxlength=6>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpProductName" class="col-sm-2 control-label input-sm">Scheme
+						Name</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpProductName" maxlength="50" placeholder="Scheme Name"
+							ng-model="objProduct.productName">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpInsuranceCode" class="col-sm-2 control-label input-sm">Insurance
+						Code</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm"
+							id="inpInsuranceCode" maxlength="12" placeholder="Insurance Code"
+							ng-model="objProduct.insuranceCode">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpProductName" class="col-sm-2 control-label input-sm">Start
+						Date</label>
+
+					<div class="col-sm-10" >
+					<div class="input-group ui-datepicker" ng-controller="DatepickerDemoCtrl">
+							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" placeholder="Select Date"
+									class="form-control" datepicker-popup="{{format}}"
+									ng-model="objProduct.startDate" is-open="opened" min="minDate"
+									max="'2020-12-30'" datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+									</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpProductName" class="col-sm-2 control-label input-sm">End
+						Date</label>
+
+					<div class="col-sm-10">
+						<div class="input-group ui-datepicker" ng-controller="DatepickerDemoCtrl">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" class="form-control"
+									datepicker-popup="{{format}}" placeholder="Select Date"
+									ng-model="objProduct.endDate" min="minDate" max="'2020-12-30'"
+									datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpProductName" class="col-sm-2 control-label input-sm">Scheme Type
+						</label>
+
+					<div class="col-sm-10">
+							<label class="ui-radio"><input type="radio"
+								ng-model="objProduct.type" value="F"><span>Fund deposit</span></label> 
+							<label class="ui-radio"><input type="radio"
+								ng-model="objProduct.type" value="I"><span>Insured premium</span></label>
+						</div>
+				</div>
+
+				<div class="form-group">
+					<label for="active" class="col-sm-2 control-label input-sm">Active</label>
+
+					<div class="col-sm-10">
+						<label> <input type="checkbox" id="active"
+							ng-model="objProduct.active" style="margin-top: 10px">
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updProduct()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="calcelProduct()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

@@ -1,0 +1,478 @@
+<div class="page" ng-controller="merchantsCtrl">
+	<form role="form" class="formFadeIn" ng-hide="merchantEditMode == true">
+
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>
+					Service Provider's List</strong>
+				<button type="button" class="btn btn-primary pull-right input-sm"
+					tooltip-placement="left" tooltip="Create New Service Provider"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addMerchant()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span class="input-sm"> Showing
+							{{filteredMerchants.length}}/{{merchants.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Service Provider Code <span
+									class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('merchantCode') "
+									data-ng-class="{active: row == 'merchantCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-merchantCode') "
+									data-ng-class="{active: row == '-merchantCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Service Provider Name <span
+									class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('merchantName') "
+									data-ng-class="{active: row == 'merchantName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-merchantName') "
+									data-ng-class="{active: row == '-merchantName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td  colspan="5" align="center" ng-show="filteredMerchants.length==0"><b>No data</b></td></tr>
+					<tr data-ng-repeat="merchant in currentPageMerchants">
+						<td>{{merchant.count}}</td>
+						<td>{{merchant.merchantCode}}</td>
+						<td>{{merchant.merchantName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top"
+								tooltip="Modify {{merchant.merchantName}}"
+								style="height: 25px; width: 60px;"
+								ng-click="editMerchant(merchant)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredMerchants.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="merchantEditMode == false" ng-mode="objMerchant">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					{{header}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding" ng-hide="true">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpmerchantCode" class="control-label input-sm">Service
+								Provider Code</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm" maxlength="4"
+								style="width: 100%;" id="inpAgentCode" placeholder="Code"
+								ng-model="objMerchant.merchantCode" ng-disabled="isExisting">
+						</div>
+					</div>
+					<div class=" col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpAgentDesc" class="control-label input-sm">Service
+								Provider Name</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm" maxlength="50"
+								style="width: 100%;" id="inpAgentDesc" placeholder="Name"
+								ng-model="objMerchant.merchantName">
+						</div>
+					</div>
+					<div class=" col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpAgentDesc" class="control-label input-sm">Physical
+								Address </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm" maxlength="50"
+								style="width: 100%;" id="inpAgentDesc" placeholder="Address"
+								ng-model="objMerchant.merAdd">
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpmerchantCode" class="control-label input-sm">Contact
+								Person </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								style="width: 100%;" id="inpAgentCode" placeholder="HQ"
+								ng-model="objMerchant.merCnctPer" ng-disabled="isExisting">
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpAgentDesc" class="control-label input-sm">Phone
+								No </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm" maxlength="50"
+								style="width: 100%;" id="inpAgentDesc" placeholder="Format 07xxxxxxxx"
+								ng-model="objMerchant.merCnctNo">
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding">
+					<div class=" col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpmerchantCode" class="control-label input-sm">Email
+							</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								style="width: 100%;" id="inpAgentCode" placeholder="Email"
+								ng-model="objMerchant.merEmail" ng-disabled="isExisting">
+						</div>
+					</div>
+					<div class=" col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpmerchantCode" class="control-label input-sm">Has HMSI
+							</label>
+						</div>
+						<div class="col-sm-8">
+							<label> <input type="checkbox" id="active"
+								ng-model="objMerchant.hasHmsi" style="margin-top: 10px">
+							</label>
+						</div>
+					</div>
+					
+				</div>
+				<div class="form-group col-sm-12 noPadding" ng-show="objMerchant.hasHmsi">
+					<div class=" col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpmerchantCode" class="control-label input-sm">Stage url
+							</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								style="width: 100%;" id="inpAgentCode" placeholder="Stage server url"
+								ng-model="objMerchant.stageServer" ng-disabled="isExisting">
+						</div>
+					</div>
+					
+				</div>
+				<div class="form-group col-sm-12 noPadding" ng-hide="true">
+
+					<div class=" col-sm-6 noPadding" >
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpAgentDesc" class="control-label input-sm">Currency
+							</label>
+						</div>
+						<div class="col-sm-8">
+							<select style="width: 100%" ui-select2 ng-model="currSelect"
+								id="curSelect">
+								<option data-ng-repeat="cur in currencies"
+									ng-selected="{{cur.currCode}}" value="{{cur.currCode}}">{{cur.currCode}}</option>
+							</select>
+						</div>
+					</div>
+					<div class=" col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpmerchantCode" class="control-label input-sm">Active
+							</label>
+						</div>
+						<div class="col-sm-8">
+							<label> <input type="checkbox" id="active"
+								ng-model="objMerchant.active" style="margin-top: 10px">
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group" >
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-success input-sm"
+						style="width: 100px" ng-click="updMerchant()">
+						<span class="glyphicon glyphicon-ok"> Save </span>
+					</button>
+					<button type="button" class="btn btn-warning input-sm"
+						style="width: 100px" ng-click="calcelMerchant()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button>
+				</div>
+			</div>
+			</div>
+			<div class="panel-heading input-sm" ng-hide="true">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					Account Information</strong>
+			</div>
+			<div class="panel-body" ng-hide="true">
+
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberPhysicalAdd" class="control-label input-sm">Account
+								Number </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberPhysicalAdd" placeholder="Account Number"
+								ng-model="objMerchant.accNumber">
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberPhysicalAdd" class="control-label input-sm">Account
+								Name </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberPhysicalAdd" placeholder="Account Name"
+								ng-model="objMerchant.accName">
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberPhysicalAdd" class="control-label input-sm">Bank
+								Code </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberPhysicalAdd" placeholder="Bank Code"
+								ng-model="objMerchant.bankCode">
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberPhysicalAdd" class="control-label input-sm">Bank
+								Name </label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberPhysicalAdd" placeholder="Bank Name"
+								ng-model="objMerchant.bankName">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-sm-12 noPadding" ng-hide="true">
+				<div class="col-sm-2 ">
+					<img ng-src="{{myCroppedImage}}" ng-model="newfile" id="icon"
+						ng-hide="capPic" placeholder="Cropped Photo" />
+				</div>
+				<div class="col-sm-10 noPadding">
+					<input type="file" title="Upload Logo" id="fileInput"
+						data-ui-file-upload class="btn-primary">
+				</div>
+
+			</div>
+			<div class="form-group" ng-hide="true">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-success input-sm"
+						style="width: 100px" ng-click="updMerchant()">
+						<span class="glyphicon glyphicon-ok"> Save </span>
+					</button>
+					<button type="button" class="btn btn-warning input-sm"
+						style="width: 100px" ng-click="calcelMerchant()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button>
+				</div>
+			</div>
+
+		</section>
+	</form>
+	
+	
+	
+	
+	<form class="form-horizontal formFadeIn" role="form" ng-hide="showPosUsers == false" ng-model=entry>
+		<section class="panel panel-default table-dynamic" id="editor">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span> Add POS Users</strong>
+			</div>
+			<div class="panel-body">
+				<div style="text-align: center;">
+					<p>Enter username and email for a new user.</p>
+					<p>The user will be created and the generated pin sent to the given email.</p>
+				</div>
+				<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px; padding-right: 40px"">
+					<div class="col-sm-4 noPadding">
+						<div class="col-sm-5" style="text-align: right;">
+							<label for="username" class="control-label input-sm">Username</label>
+						</div>
+						<div class="col-sm-7 noPadding">
+							<input type="text" ng-model="user.username"
+								placeholder="Username" class="form-control input-sm"
+								id="username" style="width: 100%" />
+						</div>
+					</div>
+
+					<div class="col-sm-4 noPadding">
+						<div class="col-sm-5" style="text-align: right;">
+							<label for="email" class="control-label input-sm">Email </label>
+						</div>
+						<div class="col-sm-7 noPadding">
+							<input type="email" ng-model="user.email"
+								placeholder="Email" class="form-control input-sm"
+								id="email" style="width: 100%" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px; padding-right: 40px">
+					<div class="col-sm-4 noPadding">
+						<div class="col-sm-5" style="text-align: right;">
+							<label for="active" class="control-label input-sm">Active</label>
+						</div>
+						<div class="col-sm-7 noPadding">
+							<label class="ui-radio"><input  type="radio"
+								ng-model="user.active" value="true" ng-checked="user.active"><span>Active</span></label> 
+							<label class="ui-radio"><input type="radio"
+								ng-model="user.active" value="false" ng-checked="!user.active"><span>Inactive</span></label>
+						</div>
+					</div>
+					
+					<div class="col-sm-4 noPadding">
+						<span class="input-group-btn" style="padding-left: 45%">
+							<button class="btn btn-primary input-sm" type="button"
+								tooltip-placement="top" tooltip="Add POS User"
+								ng-click="addPOSUser()" ng-show="!isEdit">
+								<span class="glyphicon glyphicon-plus">Add User</span>
+							</button>
+							<!--  <button class="btn btn-warning input-sm" type="button"
+								tooltip-placement="top" tooltip="Clear  Entry"
+								ng-click="removeEntry(entry)">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button> -->
+						</span>
+						<span class="input-group-btn" style="padding-left: 45%">
+							<button class="btn btn-primary input-sm" type="button"
+								tooltip-placement="top" tooltip="Add POS User"
+								ng-click="editedPOSUser()" ng-show="isEdit">
+								<span class="glyphicon glyphicon-plus" ng-show="isEdit">Edit User</span>
+							</button>
+							<!--  <button class="btn btn-warning input-sm" type="button"
+								tooltip-placement="top" tooltip="Clear  Entry"
+								ng-click="removeEntry(entry)">
+								<span class="glyphicon glyphicon-minus"></span>
+							</button> -->
+						</span>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding"
+					style="max-height: 400px; overflow-y: scroll; width: 90%; margin-left: 35px">
+					<table
+						class="table table-bordered table-striped table-responsive input-sm">
+						<thead>
+							<tr>
+								<th style="width: 100px"><div class="th">Username</div></th>
+								<th style="width: 100px"><div class="th">Email</div></th>
+								<th style="width: 92px"><div class="th">Active</div></th>
+								<th style="width: 10px"><div class="th">Edit</div></th>
+								<th style="width: 10px"><div class="th">Delete</div></th>
+								<th style="width: 10px"><div class="th">Reset PIN</div></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr	data-ng-repeat="(i, user) in posUsers track by $index">
+								<td	ng-style="{'background-color': '#eef8fc', 'color': '#26929c'}"><input
+									type="text" class="form-control input-sm" placeholder="Username " ng-model="posUsers[i].username"
+									ng-disabled="!posUsers[i].editMode" ng-style="{'color': '#26929c'}" /></td>
+								<td style="width: 105px" ng-style="{'background-color': '#eef8fc', 'color': '#26929c'}">
+								<input	type="text" ng-model="posUsers[i].email"	placeholder="Email"
+									class="form-control input-sm text-right" ng-disabled="!posUsers[i].editMode"
+									ng-style="{'color': '#26929c'}" /></td>
+								
+								<td style="vertical-align: middle;" ng-style="{'background-color': '#eef8fc', 'color': '#26929c'}">
+								{{posUsers[i].active ? 'Active' : 'Inactive' }}</td>
+								
+								<td style="width: 10px"><button class="btn btn-info" type="button"	tooltip-placement="top" 
+									tooltip="Edit  User"	ng-click="editUser(i,'edit')">Edit
+								<span class="glyphicon glyphicon-edit"></span>
+								</td>
+								<td style="width: 10px"><button class="btn btn-danger" type="button"	tooltip-placement="top" 
+									tooltip="Delete  User"	ng-click="deleteUser(i,'delete')">Delete
+								<span class="glyphicon glyphicon-erase"></span>
+								</td>
+								<td style="width: 10px"><button class="btn btn-info" type="button"	tooltip-placement="top" 
+									tooltip="Edit  User"	ng-click="editUser(i,'reset')">Reset
+								<span class="glyphicon glyphicon-edit"></span>
+								</td>
+							</button>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-body">
+				<div class="form-group col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-info input-sm"	style="width: 120px" ng-click="cancelMember()">
+						<span class="glyphicon glyphicon-arrow-left"> Back </span>
+					</button>
+<!-- 					<button type="button" class="btn btn-success input-sm" style="width: 120px" ng-click="addPOSUser()">
+						<span class="glyphicon glyphicon-ok"> Save </span>
+					</button> -->
+					<button type="button" class="btn btn-warning input-sm" style="width: 100px" ng-click="cancelMember()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button>
+				</div>
+			</div>
+		</section>
+	</form>
+	
+</div>

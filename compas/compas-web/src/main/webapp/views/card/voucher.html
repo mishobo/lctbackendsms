@@ -1,0 +1,321 @@
+
+<div class="page" ng-controller="vouchersCtrl">
+		<form class="formFadeIn" role="form" ng-hide="voucherEditMode">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					{{header}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding" ng-hide="true">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpVoucherCode" class="control-label input-sm">Benefit Basket Code</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<input type="text" class="form-control input-sm" maxlength="4"
+									style="width: 100%;" id="inpVoucherCode" placeholder="Code"
+									ng-model="voucherCode">
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpPvoucherDesc" class="control-label input-sm">Benefit Basket Name</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<input type="text" class="form-control input-sm" maxlength="50"
+									style="width: 100%;" id="inpVoucherDesc" placeholder="Name"
+									ng-model="voucherDesc">
+							</div>
+						</div>
+					</div>
+		<!-- 			<div class="form-group col-sm-12 noPadding" style="margin-top: 5px">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="noOfEmployees" class="control-label input-sm">Start
+									Date </label>
+							</div>
+							<div class="col-sm-8 noPadding"
+								ng-controller="DatepickerDemoCtrl">
+								<div class="input-group ui-datepicker">
+									<span class="input-group-addon"><i
+										class="fa fa-calendar"></i></span> <input type="text"
+										placeholder="Select Date" class="form-control"
+										datepicker-popup="{{format}}" ng-model="mem.startDate"
+										is-open="opened" min="minDate" max="'2020-12-30'"
+										datepicker-options="dateOptions"
+										date-disabled="disabled(date, mode)" ng-required="true"
+										close-text="Close">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="permitTypeSelect" class="control-label input-sm">End
+									Date </label>
+							</div>
+
+							<div class="col-sm-8 noPadding"
+								ng-controller="DatepickerDemoCtrl">
+								<div class="input-group ui-datepicker">
+									<span class="input-group-addon"><i
+										class="fa fa-calendar"></i></span> <input type="text"
+										class="form-control" datepicker-popup="{{format}}"
+										placeholder="Select Date" ng-model="mem.endDate" min="minDate"
+										max="'2020-12-30'" datepicker-options="dateOptions"
+										date-disabled="disabled(date, mode)" ng-required="true"
+										close-text="Close">
+								</div>
+
+							</div>
+						</div>
+					</div> -->
+					<!--list of servies  -->
+					<div id="editor" class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpPvoucherDesc" class="control-label input-sm">Cover type</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+							<label class="ui-radio"><input type="radio"	ng-model="coverType" value="2" 
+							ng-disabled="coverType=='1' && voucherId > 0"><span>Shared</span></label>
+							<label class="ui-radio"><input type="radio"	ng-model="coverType" value="1"
+							ng-disabled="coverType=='2' && voucherId > 0" ><span>Per person</span></label> 
+							</div>
+						</div>
+						
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpSchemeType" class="control-label input-sm">Scheme type</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+							<label class="ui-radio"><input type="radio"	ng-model="schemeType" value="I"><span>Inpatient</span></label>
+							<label class="ui-radio"><input type="radio"	ng-model="schemeType" value="O"><span>Outpatient</span></label> 
+							</div>
+						</div>
+
+						<div class="col-sm-6 noPadding" ng-hide="true">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpActive" class="control-label input-sm">Active</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<label> <input type="checkbox" id="active"
+									ng-model="active" style="margin-top: 10px">
+								</label>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<!-- Grids -->
+				<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px" ng-hide="showServices">
+					<!-- Services Grid -->
+					<div class="col-sm-12 noPadding" style="padding-left: 5px;">
+						<section class="panel panel-default">
+							<div class="panel-heading input-sm">
+								<strong><span class="glyphicon glyphicon-th"></span>
+									Service Info</strong>
+							</div>
+							<div class="panel-body"
+								style="max-height: 400px; overflow-y: auto;">
+								<div class="form-group col-sm-12 noPadding"
+									ng-show="typeSelect==3">
+									<div class="form-group col-sm-12 noPadding">
+										<div class="col-sm-2" style="text-align: left;">
+											<label for="inpAgentCode" class="control-label input-sm">Voucher
+												Value</label>
+										</div>
+										<div class="col-sm-10 noPadding">
+											<input type="number" class="form-control input-sm"
+												style="width: 100%;" id="inpAgentCode"
+												placeholder="Voucher Value" ng-model="voucherValue">
+										</div>
+									</div>
+								</div>
+								<table
+									class="table table-bordered table-striped table-responsive input-sm">
+									<thead>
+										<tr>
+											<th style="width: 10px"></th>
+											<th style="width: 10px" ng-hide="true">
+												<div class="th">Id</div>
+											</th>
+											<th style="width: 260px">
+												<div class="th">Service Name</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<tr data-ng-repeat="service in services">
+											<td><input type="checkbox" ng-model="service.isActive"
+												ng-checked="service.isActive"
+												ng-change="selectService($index)"></td>
+											<td ng-hide="true">{{service.serviceId}}</td>
+											<td>{{service.serviceName}}</td>
+										</tr>
+									</tbody>
+								</table>
+
+
+							</div>
+						</section>
+					</div>
+
+
+					<!-- Buttons -->
+
+				</div>
+				<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updVoucher()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="cancelVoucher()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+
+	<form role="form" class="form-horizontal formFadeIn">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Benefit Basket's List</strong>
+				<button type="button" class="btn btn-primary pull-right"
+					tooltip-placement="left" tooltip="Create New Benefit Basket"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addVoucher()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing {{vouchers.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('voucherId') "
+									data-ng-class="{active: row == 'voucherId'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-voucherId') "
+									data-ng-class="{active: row == '-voucherId'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Benefit Basket Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('voucherCode') "
+									data-ng-class="{active: row == 'voucherCode'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-voucherCode') "
+									data-ng-class="{active: row == '-voucherCode'}"></span>
+							</div>
+						</th>
+
+						<th>
+							<div class="th">
+								Benefit Basket Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('voucherDesc') "
+									data-ng-class="{active: row == 'voucherDesc'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-voucherDesc') "
+									data-ng-class="{active: row == '-voucherDesc'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Benefit Basket Type <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('voucherType') "
+									data-ng-class="{active: row == 'voucherType'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-voucherType') "
+									data-ng-class="{active: row == '-voucherType'}"></span>
+							</div>
+						</th>
+						
+						<th>
+							<div class="th">
+								Benefit Scheme Type <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('schemeType') "
+									data-ng-class="{active: row == 'schemeType'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-schemeType') "
+									data-ng-class="{active: row == '-schemeType'}"></span>
+							</div>
+						</th>
+
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td  colspan="6" align="center" ng-show="filteredVouchers.length==0"><b>No data</b></td></tr>
+					<tr data-ng-repeat="voucher in currentPageVouchers">
+						<td>{{voucher.count}}</td>
+						<td>{{voucher.voucherCode}}</td>
+						<td>{{voucher.voucherDesc}}</td>
+						<td ng-show="voucher.voucherType=='VA'">Value Basket</td>
+						<td ng-show="voucher.voucherType=='CM'">Commodity Basket</td>
+						<td ng-show="voucher.voucherType=='CA'">Cash Basket</td>
+						<td ng-show="voucher.voucherType=='HB'">Health Basket</td>
+						<td>{{ voucher.schemeType == "I" ? "Inpatient": "Outpatient" }}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								style="height: 25px; width: 60px;" tooltip-placement="top"
+								tooltip="Modify {{voucher.voucherDesc}}"
+								ng-click="editVoucher(voucher)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()"></select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredVouchers.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+</div>

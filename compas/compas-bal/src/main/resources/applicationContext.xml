@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+    http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- <cache:annotation-driven /> -->
+	<context:component-scan base-package="com.compulynx.compas.bal.impl"></context:component-scan>
+	<jee:jndi-lookup id="dataSource" jndi-name="/jdbc/compasDS"	resource-ref="true" />
+
+	<!-- Login Bean Dal -->
+	<bean id="loginDal" class="com.compulynx.compas.dal.impl.LoginDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- User Bean Dal -->
+	<bean id="userDal" class="com.compulynx.compas.dal.impl.UserDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- UserGroup Bean Dal -->
+	<bean id="userGroupDal" class="com.compulynx.compas.dal.impl.UserGroupDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- Branch Bean Dal -->
+	<bean id="branchDal" class="com.compulynx.compas.dal.impl.BranchDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Device Bean Dal -->
+	<bean id="deviceDal" class="com.compulynx.compas.dal.impl.DeviceDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- Service Bean Dal -->
+	<bean id="serviceDal" class="com.compulynx.compas.dal.impl.ServiceDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	
+
+	<!-- Member Bean Dal -->
+	<bean id="memberDal" class="com.compulynx.compas.dal.impl.CustomerDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- Member Bean Dal -->
+	<bean id="transactionDal" class="com.compulynx.compas.dal.impl.TransactionDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- Dash Board Bean Dal -->
+	<bean id="dashBoardDal" class="com.compulynx.compas.dal.impl.DashBoardDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- Programme Bean Dal -->
+	<bean id="programmeDal" class="com.compulynx.compas.dal.impl.ProgrammeDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- Organization Bean Dal -->
+	<bean id="organizationDal" class="com.compulynx.compas.dal.impl.OrganizationDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Merchant Bean Dal -->
+	<bean id="merchantDal" class="com.compulynx.compas.dal.impl.MerchantDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Merchant Bean Dal -->
+	<bean id="agentDal" class="com.compulynx.compas.dal.impl.AgentDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+
+	<!-- BIn Bean Dal -->
+	<bean id="binDal" class="com.compulynx.compas.dal.impl.BinAllocationDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	
+	
+	<!-- Region Bean Dal -->
+	<bean id="regionDal" class="com.compulynx.compas.dal.impl.RegionDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Product Bean Dal -->
+	<bean id="productDal" class="com.compulynx.compas.dal.impl.ProductDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Voucher Bean Dal -->
+	<bean id="vocuherDal" class="com.compulynx.compas.dal.impl.VoucherDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Beneficiary Upload Bean Dal -->
+	<bean id="bnfUploadDal" class="com.compulynx.compas.dal.impl.BeneficiaryUploadDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	
+	
+	<!-- Category Topup Bean Dal -->
+	<bean id="categoryDal" class="com.compulynx.compas.dal.impl.CategoryDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	
+	<!-- User Password Reset Bean Dal -->
+	<bean id="resetDal" class="com.compulynx.compas.dal.impl.ResetDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Upload Claim Bean Dal -->
+	<bean id="uploadclaimDal" class="com.compulynx.compas.dal.impl.UploadclaimDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Mobile Api Dal -->
+	<bean id="mobileApiDal" class="com.compulynx.compas.dal.impl.MobileApiDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Upload Service Bean Dal -->
+	<bean id="uploadserviceDal" class="com.compulynx.compas.dal.impl.UploadserviceDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	<!-- Upload Member Bean Dal -->
+	<bean id="uploadmemberDal" class="com.compulynx.compas.dal.impl.UploadmemberDalImpl">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+</beans>
+

@@ -1,0 +1,153 @@
+<div class="page" ng-controller="zonesCtrl">
+	<form role="form" class="formFadeIn" ng-hide="zoneEditMode == true">
+
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>
+					Region's List</strong>
+				<button type="button" class="btn btn-primary pull-right input-sm"
+					tooltip-placement="left" tooltip="Create New Province"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addZone()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span class="input-sm"> Showing
+							{{filteredZones.length}}/{{zones.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Region Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('zoneCode') "
+									data-ng-class="{active: row == 'zoneCode'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-zoneCode') "
+									data-ng-class="{active: row == '-zoneCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Region Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('zoneName') "
+									data-ng-class="{active: row == 'zoneName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-zoneName') "
+									data-ng-class="{active: row == '-zoneName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="zone in currentPageZones">
+						<td>{{zone.count}}</td>
+						<td>{{zone.zoneCode}}</td>
+						<td>{{zone.zoneName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top" tooltip="Modify {{zone.zoneName}}"
+								style="height: 25px; width: 60px;" ng-click="editZone(zone)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredZones.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="zoneEditMode == false">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					{{header}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="inpZoneCode" class="col-sm-2 control-label input-sm">Region Code</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="inpZoneCode" maxlength="4"
+							placeholder="Region Code" ng-model="zoneCode" ng-disabled="isExisting">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inpZoneName" class="col-sm-2 control-label input-sm">Region Name</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="inpZoneName"  maxlength="50"
+							placeholder="Region Name" ng-model="zoneName">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="active" class="col-sm-2 control-label input-sm">Active</label>
+
+					<div class="col-sm-10">
+						<label> <input type="checkbox" id="active"
+							ng-model="active" style="margin-top: 10px">
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updZone()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="calcelZone()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

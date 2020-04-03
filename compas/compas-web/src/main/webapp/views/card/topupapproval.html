@@ -1,0 +1,316 @@
+<div class="page" ng-controller="topupApprovalCtrl">
+	<form class="form-horizontal formFadeIn" role="form">
+		<section class="panel panel-default">
+
+			<!--Start topup type selection-->
+
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span> TOPUP
+					APPROVAL</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12 noPadding">
+					<!-- category code -->
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatCode" class="control-label input-sm">
+								From Date</label>
+						</div>
+
+						<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+							<div class="input-group ui-datepicker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" placeholder="Select Date"
+									class="form-control" datepicker-popup="{{format}}"
+									ng-model="mem.FromDt" is-open="opened" min="minDate"
+									max="'2020-12-30'" datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+						</div>
+						<!-- 	<input type="text" id='newFrDt' class="ng-binding" ng-model="mem.FromDt" ng-value="{{mem.FromDt | date:'shortDate'}}"  /> -->
+					</div>
+					<!-- category Name -->
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatName" class="control-label input-sm">
+								To Date</label>
+						</div>
+						<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+							<div class="input-group ui-datepicker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" class="form-control"
+									datepicker-popup="{{format}}" placeholder="Select Date"
+									ng-model="mem.ToDt" min="minDate" max="'2020-12-30'"
+									datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="form-group col-sm-12 noPadding">
+					<!-- category code -->
+
+					<div class="col-sm-12 noPadding">
+						<div class="col-sm-2" style="text-align: right;">
+							<label for="bnfGrpSelect" class="control-label input-sm"
+								style="text-align: right;">Beneficicary Group</label>
+						</div>
+						<div class="col-sm-10 noPadding">
+							<select style="width: 100%" ui-select2="" ng-model="bnfGrpSelect"
+								id="bnfGrpSelect">
+								<option data-ng-repeat="bnfGrp in beneficiaryGroups"
+									ng-selected="{{bnfGrp.bnfGrpId}}" value="{{bnfGrp.bnfGrpId}}">{{bnfGrp.bnfGrpName}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding" ng-hide="true">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="bnfGrpSelect" class="control-label input-sm"
+								style="text-align: right;">Retailer</label>
+						</div>
+						<div class="col-sm-8 noPadding">
+							<select style="width: 100%" ui-select2="" ng-model="agentSelect"
+								id="agentSelect">
+								<option data-ng-repeat="agent in retailers"
+									ng-selected="{{agent.agentId}}" value="{{agent.agentId}}">{{agent.agentDesc}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding" ng-hide="showAgents">
+					<section class="panel panel-default">
+						<div class="panel-heading input-sm">
+							<strong><span class="glyphicon glyphicon-th input-sm"></span>
+								Retailers Information</strong>
+						</div>
+						<div class="panel-body">
+							<div class="form-group col-sm-12"
+								style="max-height: 400px; overflow-y: auto;">
+
+								<table
+									class="table table-bordered table-striped table-responsive input-sm">
+									<thead>
+										<tr>
+											<th><input type="checkbox"
+												ng-model="allRetailerSelected"
+												ng-change="selectAllRetailers()"></th>
+											<th style="width: 10px" ng-hide="true">
+												<div class="th">Id</div>
+											</th>
+											<th>
+												<div class="th">Retailer Name</div>
+											</th>
+
+										</tr>
+									</thead>
+									<tbody>
+
+										<tr data-ng-repeat="retailer in retailers">
+											<td><input type="checkbox" ng-model="retailer.isActive"
+												ng-checked="retailer.isActive"
+												ng-change="selectRetailer($index)"></td>
+											<td ng-hide="true">{{retailer.agentId}}</td>
+											<td>{{retailer.agentDesc}}</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+
+					</section>
+				</div>
+				<div class="form-group" style="margin-left: 200px">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="approve()">
+							<span class="glyphicon glyphicon-ok"> Approve </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="cancelapprove()">
+							<span class="glyphicon glyphicon-ok"> Cancel </span>
+						</button>
+					</div>
+
+				</div>
+			</div>
+
+		</section>
+	</form>
+	<form role="form" class="formFadeIn" ng-hide="showTopupDetails" ng-hide="true">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span> Topup
+					Details</strong>
+
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing {{filteredTopups.length}}/{{topups.length}}
+							entries </span>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<table
+						class="table table-bordered table-striped table-responsive input-sm">
+						<thead>
+							<tr>
+								<th style="width: 50px; margin-left: 5px"><input
+									type="checkbox" ng-model="allTopupSelected"
+									style="margin-left: 6px" ng-change="selectAllTopup()">
+								</th>
+								<th>
+									<div class="th">
+										# <span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('count') "
+											data-ng-class="{active: row == 'count'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-count') "
+											data-ng-class="{active: row == '-count'}"></span>
+									</div>
+								</th>
+								<th>
+									<div class="th">
+										Beneficiary Group <span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('bnfGrpname') "
+											data-ng-class="{active: row == 'bnfGrpname'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-bnfGrpname') "
+											data-ng-class="{active: row == '-bnfGrpname'}"></span>
+									</div>
+								</th>
+
+								<th>
+									<div class="th">
+										Programme Name<span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('programme_name') "
+											data-ng-class="{active: row == 'programme_name'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-programme_name') "
+											data-ng-class="{active: row == '-programme_name'}"></span>
+									</div>
+								</th>
+								<th>
+									<div class="th">
+										Voucher Name<span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('voucherName') "
+											data-ng-class="{active: row == 'voucherName'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-voucherName') "
+											data-ng-class="{active: row == '-voucherName'}"></span>
+									</div>
+								</th>
+								<th>
+									<div class="th">
+										Commodity Name<span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('service_name') "
+											data-ng-class="{active: row == 'service_name'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-service_name') "
+											data-ng-class="{active: row == '-service_name'}"></span>
+									</div>
+								</th>
+								<th>
+									<div class="th">
+										UOM<span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('uom') "
+											data-ng-class="{active: row == 'uom'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-uom') "
+											data-ng-class="{active: row == '-uom'}"></span>
+									</div>
+								</th>
+								<th>
+									<div class="th">
+										Value<span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('itemvalue') "
+											data-ng-class="{active: row == 'itemvalue'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-itemvalue') "
+											data-ng-class="{active: row == '-itemvalue'}"></span>
+									</div>
+								</th>
+								<th>
+									<div class="th">
+										Card Number<span class="glyphicon glyphicon-chevron-up"
+											data-ng-click=" order('card_number') "
+											data-ng-class="{active: row == 'card_number'}"></span><span
+											class="glyphicon glyphicon-chevron-down"
+											data-ng-click=" order('-card_number') "
+											data-ng-class="{active: row == '-card_number'}"></span>
+									</div>
+								</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat="topup in currentPageTopups">
+								<td><input type="checkbox" ng-model="topup.isActive"
+									ng-checked="topup.isActive" ng-change="selectTopup($index)"></td>
+								<td>{{topup.count}}</td>
+								<td>{{topup.bnfGrpname}}</td>
+								<td>{{topup.programme_name}}</td>
+								<td>{{topup.voucherName}}</td>
+								<td>{{topup.service_name}}</td>
+								<td>{{topup.uom}}</td>
+								<td>{{topup.itemvalue}}</td>
+
+								<td>{{topup.card_number}}</td>
+
+							</tr>
+						</tbody>
+					</table>
+
+					<footer class="table-footer input-sm">
+
+						<div class="row">
+							<div class="col-md-6 page-num-info">
+								<span> Show <select data-ng-model="numPerPage"
+									data-ng-options="num for num in numPerPageOpt"
+									data-ng-change="onNumPerPageChange()"></select> entries per
+									page
+								</span>
+							</div>
+							<div class="col-md-6 text-right pagination-container">
+								<pagination class="pagination-sm" page="currentPage"
+									total-items="filteredTopups.length" max-size="4"
+									on-select-page="select(page)" items-per-page="numPerPage"
+									rotate="false" boundary-links="true"></pagination>
+							</div>
+						</div>
+					</footer>
+				</div>
+				<div class="form-group" style="margin-left: 200px">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="approve()">
+							<span class="glyphicon glyphicon-ok"> Approve </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="cancelapprove()">
+							<span class="glyphicon glyphicon-ok"> Cancel </span>
+						</button>
+					</div>
+
+				</div>
+			</div>
+
+		</section>
+	</form>
+</div>

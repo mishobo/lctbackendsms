@@ -1,0 +1,213 @@
+<div class="page" ng-controller="agentsCtrl">
+
+	<form role="form" class="formFadeIn" ng-hide="agentEditMode">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Satelite's List</strong>
+				<button type="button" class="btn btn-primary pull-right"
+					tooltip-placement="left" tooltip="Create New Satelite"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addAgent()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing {{filteredAgents.length}}/{{agent.length}}
+							entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Satelite Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('agentCode') "
+									data-ng-class="{active: row == 'agentCode'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-agentCode') "
+									data-ng-class="{active: row == '-agentCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Satelite Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('agentDesc') "
+									data-ng-class="{active: row == 'agentDesc'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-agentDesc') "
+									data-ng-class="{active: row == '-agentDesc'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Location<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('locationName') "
+									data-ng-class="{active: row == 'locationName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-locationName') "
+									data-ng-class="{active: row == '-locationName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="agent in currentPageAgents">
+						<td>{{agent.count}}</td>
+						<td>{{agent.agentCode}}</td>
+						<td>{{agent.agentDesc}}</td>
+						<td>{{agent.locationName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								style="height: 25px; width: 60px;" tooltip-placement="top"
+								tooltip="Modify{{agent.agentDesc}}" ng-click="editAgent(agent)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()"></select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredAgents.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+
+	<form class="formFadeIn" role="form" ng-hide="!agentEditMode">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>{{header}} </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					<div class="form-group col-sm-12 noPadding">
+						<div class="form-group col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpAgentCode" class="control-label input-sm">Satelite
+									Code</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm" maxlength="4"
+									style="width: 100%;" id="inpAgentCode" placeholder="Code"
+									ng-model="agentCode" ng-disabled="isExisting">
+							</div>
+						</div>
+						<div class="form-group col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpAgentDesc" class="control-label input-sm">Satelite
+									Name</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm" maxlength="50"
+									style="width: 100%;" id="inpAgentDesc" placeholder="Name"
+									ng-model="agentDesc">
+							</div>
+						</div>
+						<!--list of servies  -->
+
+
+					</div>
+
+					<div class="form-group col-sm-12 noPadding"
+						style="margin-top: 10px">
+						<div class="form-group col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpActive" class="control-label input-sm">Service Provider</label>
+							</div>
+							<div class="col-sm-8">
+								<select style="width: 100%" ui-select2="" ng-change="onMerchantChange(merchantSelect)"
+									ng-model="merchantSelect" id="merchantSelect">
+									<option data-ng-repeat="merchant in merchants"
+										ng-selected="{{merchant.merchantId}}"
+										value="{{merchant.merchantId}}">{{merchant.merchantName}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="locationSelect" class="control-label input-sm">Location</label>
+							</div>
+							<div class="col-sm-8">
+								<select style="width: 100%" ui-select2=""
+									ng-model="locationSelect" id="locationSelect">
+									<option data-ng-repeat="loc in locations"
+										value="{{loc.locationId}}">{{loc.locationName}}</option>
+								</select>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-12 noPadding">
+							<div class="col-sm-2" style="text-align: right;">
+								<label for="branchCode" class="control-label input-sm">Active
+								</label>
+							</div>
+							<div class="col-sm-10 noPadding">
+								<label> <input type="checkbox" id="active"
+									ng-model="active" style="margin-top: 10px">
+								</label>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="form-group" style="margin-top: 50px">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updAgent()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="cancelAgent()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

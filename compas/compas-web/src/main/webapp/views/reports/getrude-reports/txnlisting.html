@@ -1,0 +1,130 @@
+
+<div class="page" ng-controller="rptTransactionCtrl">
+	<form role="form" class="formFadeIn">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Trasaction's List</strong>
+
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing
+							{{filteredTxns.length}}/{{txn.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('count') "
+									data-ng-class="{active: row == 'count'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-count') "
+									data-ng-class="{active: row == '-count'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Txn Type <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('txnType') "
+									data-ng-class="{active: row == 'txnType'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-txnType') "
+									data-ng-class="{active: row == '-txnType'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Card Number <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('cardNumber') "
+									data-ng-class="{active: row == 'cardNumber'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-cardNumber') "
+									data-ng-class="{active: row == '-cardNumber'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Transaction Value <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('amount') "
+									data-ng-class="{active: row == 'amount'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-amount') "
+									data-ng-class="{active: row == '-amount'}"></span>
+							</div>
+						</th>
+
+
+						<th>
+							<div class="th">
+								Device Id <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('deviceId') "
+									data-ng-class="{active: row == 'deviceId'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-deviceId') "
+									data-ng-class="{active: row == '-deviceId'}"></span>
+							</div>
+						</th>
+
+						<th>
+							<div class="th">
+								Transaction Date<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('txnDate') "
+									data-ng-class="{active: row == 'txnDate'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-txnDate') "
+									data-ng-class="{active: row == '-txnDate'}"></span>
+							</div>
+						</th>
+
+
+						
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="txn in currentPageTxns">
+						<td>{{txn.count}}</td>
+						<td>{{txn.txnType}}</td>
+						<td>{{txn.cardNumber}}</td>
+						<td>{{txn.amount}}</td>
+						<td>{{txn.deviceId}}</td>
+						<td>{{txn.txnDate}}</td>
+					
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()"></select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredTxns.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+</div>

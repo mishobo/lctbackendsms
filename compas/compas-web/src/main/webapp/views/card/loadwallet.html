@@ -1,0 +1,55 @@
+<div class="page" ng-controller="loadWalletCtrl">
+<form class="form-horizontal formFadeIn" role="form"
+		>
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Load Card</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="programmeDesc" class="control-label input-sm">Programme</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+									<input type="text" class="form-control input-sm"
+								style="width: 100%;" id="inpGroupName" placeholder="BIN Range"
+								ng-model="programmeDesc" readOnly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="programmeValue" class="control-label input-sm">Value</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+									<input type="number" class="form-control input-sm"
+								style="width: 100%;" id="inpProgrammeValue" placeholder="Value"
+								ng-model="programmeValue" >
+							</div>
+						</div>
+					
+					</div>
+			
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="button" class="btn btn-success input-sm"
+								style="width: 100px" ng-click="updLoadCard()">
+								<span class="glyphicon glyphicon-ok">Save</span>
+							</button>
+							<button type="button" class="btn btn-warning input-sm"
+								style="width: 100px" ng-click="cancelLoadCard()">
+								<span class="glyphicon glyphicon-remove"> Cancel</span>
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

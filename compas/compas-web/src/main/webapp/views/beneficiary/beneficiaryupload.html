@@ -1,0 +1,126 @@
+<div class="page" ng-controller="fileuploadCtrl">
+	<form class="formFadeIn" role="form">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Beneficiary upload </strong>
+					<button type="button" class="btn btn-warning pull-right" ng-hide="orgSelect<1"
+					tooltip-placement="left" tooltip="Cancel member upload"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="cancelUpload()()">
+					<span class="glyphicon glyphicon-remove" style="top: -2px"></span>
+				</button>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<div class="form-group col-sm-6 noPadding"
+						style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Insurance Provider</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2=""
+								ng-change="onOrgChange(orgSelect)" ng-model="orgSelect"
+								id="orgSelect" ng-disabled="isDisabled">
+								<option data-ng-repeat="org in orgs" value="{{org.orgId}}">{{org.orgName}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding" ng-hide="!showProducts">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="coverSelect" class="control-label input-sm ">
+									Scheme</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+							<select style="width: 100%" ui-select2=""
+								ng-change="onProductChange(productSelect)"
+								ng-model="productSelect" id="productSelect">
+								<option data-ng-repeat="product in products"
+									ng-selected="{{product.productId}}"
+									value="{{product.productId}}">{{product.productName}}</option>
+							</select>
+							</div>
+						</div>
+				</div>
+				
+			</div>
+						<div class="panel-heading input-sm" ng-hide="!showProgrammes">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					COVER CATEGORY</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12" ng-hide="!showProgrammes"
+					style="max-height: 400px; overflow-y: auto;">
+
+					<table
+						class="table table-bordered table-striped table-responsive input-sm">
+						<thead>
+							<tr>
+								<th>Choose one</th>
+								<th style="width: 10px" ng-hide="true">
+									<div class="th">Id</div>
+								</th>
+								<th>
+									<div class="th">Cover category</div>
+								</th>
+								<th ng-hide="true">
+									<div class="th">Value</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr data-ng-repeat="programme in categories">
+								<td><input type="checkbox" ng-model="programme.isActive"
+									ng-checked="programme.isActive"
+									ng-change="selectProgramme($index)"></td>
+								<td ng-hide="true">{{programme.programmeId}}</td>
+								<td>{{programme.programmeDesc}}</td>
+								<td ng-hide="true"><input type="number"
+									class="form-control input-sm" id="inpPrgrammeValue"
+									placeholder="Value" ng-model="programme.programmeValue"></td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</section>
+	</form>
+        <section class="panel panel-default" ng-hide="!showUpload">
+            <div class="panel-heading input-sm">
+                <strong><span class="glyphicon glyphicon-th"></span> Upload Beneficiary Details</strong>
+            </div>
+            <div class="panel-body">
+                <!--Start File Upload-->
+                <b>Please select Excel File Format</b>
+                <br></br>
+                <form class="form-horizontal formFadeIn"  ng-submit="uploadBeneficiaryDetails()">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="uploadfile" class="col-sm-2 control-label">File:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="file" title="Select File" id="uploadfile" file-model="myFile"
+                                       data-ui-file-upload class="btn-primary" accept=".application/vnd.sealed-xls,.xlsx" required="true">
+                            </div>
+                        </div>
+
+                        <div class="form-group"></div>
+                        <div class="form-group">
+                            <label for="uploadfile" class="col-sm-2 control-label">
+                            </label>
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-success">Upload</button>
+                            </div>
+                            <!--<button type="button" class="btn btn-primary btn-lg btn-block"	ng-click="Login(UserName,Password)">Log in</button>-->
+                        </div>
+                    </fieldset>
+                    
+                </form>
+                <!--End File Upload-->
+
+            </div>
+        </section>
+</div>

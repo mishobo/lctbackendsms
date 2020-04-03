@@ -1,0 +1,198 @@
+<div class="page" ng-controller="walletCtrl">
+<!-- 	<form role="form" class="formFadeIn" -->
+<!-- 		ng-hide="locationEditMode == true "> -->
+<!-- 		<section class="panel panel-default table-dynamic"> -->
+<!-- 			<div class="panel-heading input-sm"> -->
+<!-- 				<strong><span class="glyphicon glyphicon-th"></span> -->
+<!-- 					Wallet's Info</strong> -->
+<!-- 				<button type="button" class="btn btn-primary pull-right" -->
+<!-- 					tooltip-placement="left" tooltip="Create New Location" -->
+<!-- 					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px" -->
+<!-- 					ng-click="addWallet()"> -->
+<!-- 					<span class="glyphicon glyphicon-plus" style="top: -2px"></span> -->
+<!-- 				</button> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="table-filters"> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-sm-4 col-xs-6"> -->
+<!-- 						<form> -->
+<!-- 							<input type="text" placeholder="search" -->
+<!-- 								class="form-control input-sm" data-ng-model="searchKeywords" -->
+<!-- 								data-ng-keyup="search()"> -->
+<!-- 						</form> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-sm-3 col-xs-6 filter-result-info input-sm"> -->
+<!-- 						<span> Showing -->
+<!-- 							{{filteredWalletDetails.length}}/{{location.length}} entries </span> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 			<table -->
+<!-- 				class="table table-bordered table-striped table-responsive input-sm"> -->
+<!-- 				<thead> -->
+<!-- 					<tr> -->
+<!-- 						<th> -->
+<!-- 							<div class="th"> -->
+<!-- 								# <span class="glyphicon glyphicon-chevron-up" -->
+<!-- 									data-ng-click=" order('locationId') " -->
+<!-- 									data-ng-class="{active: row == 'locationId'}"></span><span -->
+<!-- 									class="glyphicon glyphicon-chevron-down" -->
+<!-- 									data-ng-click=" order('-locationId') " -->
+<!-- 									data-ng-class="{active: row == '-locationId'}"></span> -->
+<!-- 							</div> -->
+<!-- 						</th> -->
+<!-- 						<th> -->
+<!-- 							<div class="th"> -->
+<!-- 								Wallet Name <span class="glyphicon glyphicon-chevron-up" -->
+<!-- 									data-ng-click=" order('locationName') " -->
+<!-- 									data-ng-class="{active: row == 'locationName'}"></span><span -->
+<!-- 									class="glyphicon glyphicon-chevron-down" -->
+<!-- 									data-ng-click=" order('-locationName') " -->
+<!-- 									data-ng-class="{active: row == '-locationName'}"></span> -->
+<!-- 							</div> -->
+<!-- 						</th> -->
+<!-- 						<th> -->
+<!-- 							<div class="th"> -->
+<!-- 								 Name <span class="glyphicon glyphicon-chevron-up" -->
+<!-- 									data-ng-click=" order('branchName') " -->
+<!-- 									data-ng-class="{active: row == 'branchName'}"></span><span -->
+<!-- 									class="glyphicon glyphicon-chevron-down" -->
+<!-- 									data-ng-click=" order('-branchName') " -->
+<!-- 									data-ng-class="{active: row == '-branchName'}"></span> -->
+<!-- 							</div> -->
+<!-- 						</th> -->
+
+<!-- 						<th style="width: 60px"></th> -->
+<!-- 					</tr> -->
+<!-- 				</thead> -->
+<!-- 				<tbody> -->
+<!-- 					<tr data-ng-repeat="location in currentPageLocations"> -->
+<!-- 						<td>{{location.locationId}}</td> -->
+<!-- 						<td>{{location.locationName}}</td> -->
+<!-- 						<td>{{location.branchName}}</td> -->
+<!-- 						<td style="padding: 1px;"> -->
+<!-- 							<button type="button" class="btn btn-success" -->
+<!-- 								style="height: 25px; width: 60px;" tooltip-placement="top" -->
+<!-- 								tooltip="Modify {{location.locationName}}" -->
+<!-- 								ng-click="editLocation(location)"> -->
+<!-- 								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span> -->
+<!-- 							</button> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+<!-- 				</tbody> -->
+<!-- 			</table> -->
+
+<!-- 			<footer class="table-footer input-sm"> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-6 page-num-info"> -->
+<!-- 						<span> Show <select data-ng-model="numPerPage" -->
+<!-- 							data-ng-options="num for num in numPerPageOpt" -->
+<!-- 							data-ng-change="onNumPerPageChange()"></select> entries per page -->
+<!-- 						</span> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-md-6 text-right pagination-container"> -->
+<!-- 						<pagination class="pagination-sm" page="currentPage" -->
+<!-- 							total-items="filteredLocations.length" max-size="4" -->
+<!-- 							on-select-page="select(page)" items-per-page="numPerPage" -->
+<!-- 							rotate="false" boundary-links="true"></pagination> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</footer> -->
+<!-- 		</section> -->
+<!-- 	</form> -->
+	<form class="form-horizontal formFadeIn" role="form"
+		>
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Wallet Management</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="locationName" class="control-label input-sm">Organization</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<select style="width: 100%" ui-select2="organizationSelect"
+								ng-model="organizationSelect" id="organizationSelect"
+								ng-disabled="isDisabled">
+								<option data-ng-repeat="organization in organizations"
+									value="{{organization.organizationId}}">{{organization.organizationName}}</option>
+							</select>
+
+							</div>
+						</div>
+					
+					</div>
+									<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px">
+					<!-- Services Grid -->
+					<div class="col-sm-12 noPadding" style="padding-left: 5px;">
+						<section class="panel panel-default">
+							<div class="panel-heading input-sm">
+								<strong><span class="glyphicon glyphicon-th"></span>
+									Wallet Info</strong>
+							</div>
+							<div class="panel-body"
+								style="max-height: 400px; overflow-y: auto;">
+								<table
+									class="table table-bordered table-striped table-responsive input-sm">
+									<thead>
+										<tr>
+											<th><input type="checkbox" ng-model="allItemsSelected"
+												ng-change="selectAllWallets()"></th>
+											<th style="width: 10px" ng-hide="true">
+												<div class="th">Id</div>
+											</th>
+											<th style="width: 260px">
+												<div class="th">Wallet Name</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<tr data-ng-repeat="wallet in wallets">
+											<td><input type="checkbox" ng-model="wallet.isActive"
+												ng-checked="wallet.isActive"
+												ng-change="selectWallet($index)"></td>
+											<td ng-hide="true">{{wallet.walletId}}</td>
+											<td>{{wallet.walletName}}</td>
+
+										</tr>
+									</tbody>
+								</table>
+
+
+							</div>
+						</section>
+					</div>
+
+
+					<!-- Buttons -->
+
+				</div>
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="button" class="btn btn-success input-sm"
+								style="width: 100px" ng-click="updWallet()">
+								<span class="glyphicon glyphicon-ok">Save</span>
+							</button>
+							<button type="button" class="btn btn-warning input-sm"
+								style="width: 100px" ng-click="cancelWalllet()">
+								<span class="glyphicon glyphicon-remove"> Cancel</span>
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

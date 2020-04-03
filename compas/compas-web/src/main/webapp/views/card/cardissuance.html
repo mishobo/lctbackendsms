@@ -1,0 +1,55 @@
+
+<div class="page" ng-controller="memberCardCtrl">
+	<form class="formFadeIn" role="form" >
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span> Card
+					Issuance</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					<div class="form-group col-sm-12 noPadding">
+					
+
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberSurname" class="control-label input-sm">Card No</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpCardNo" placeholder="Card No" ng-model="cardNo">
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberId" class="control-label input-sm">Select Customer</label>
+						</div>
+						<div class="col-sm-8">
+							<select style="width: 100%" ui-select2="" readonly
+								ng-model="memberSelect" id="memberSelect" >
+								<option data-ng-repeat="member in members"
+									ng-selected="{{member.memberId}}"
+									value="{{member.memberId}}">{{member.surName}} {{member.firstName}}</option>
+							</select>
+						</div>
+					</div>
+
+						<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm"
+							style="width: 100px" ng-click="updCardIss()">
+							<span class="glyphicon glyphicon-ok"> Save </span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="calcelCardIss()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

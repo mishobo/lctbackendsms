@@ -1,0 +1,60 @@
+<style>
+a:link    {color:green; background-color:transparent; text-decoration:none}
+a:visited {color:blue; background-color:transparent; text-decoration:none}
+a:hover   {color:blue; background-color:transparent; text-decoration:underline}
+a:active  {color:red; background-color:transparent; text-decoration:underline}
+</style>
+<div class="page" ng-controller="uploadserviceCtrl">
+<form class="formFadeIn" role="form">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Upload Services </strong>
+			</div>
+		</section>
+	</form>
+	
+	<form class="form-horizontal formFadeIn" role="form">
+		<section class="panel panel-default">
+
+			<!--Start topup type selection-->
+
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+				Upload	AKUH Services </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						                <form class="form-horizontal formFadeIn"  ng-submit="uploadService()">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="uploadfile" class="col-sm-2 control-label">File:
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="file" title="Select File" id="uploadfile" file-model="myFile"
+                                       data-ui-file-upload class="btn-primary" accept=".application/vnd.sealed-xls,.xlsx" required="true">
+                            </div>
+                        </div>
+
+                        <div class="form-group"></div>
+                        <div class="form-group">
+                            <label for="uploadfile" class="col-sm-2 control-label">
+                            </label>
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-success" ng-click="uploadService()">Upload</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                </form>
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</section>
+	</form>
+</div>

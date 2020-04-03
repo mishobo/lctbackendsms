@@ -1,0 +1,31 @@
+<div class="page page-lock" ng-controller="lockCtrl">
+	<div class="lock-centered clearfix">
+		<div class="lock-container">
+			<div ui-time class="lock-time" style="color: antiquewhite;"></div>
+			<div style="margin-top: -19px">
+				<img alt="" src="images/compulynx20.png"
+					style="bottom: 0; float: right;">
+			</div>
+			<section class="lock-box">
+				<div class="lock-user">{{login.userFullName}}</div>
+				<div class="lock-img">
+					<img src="images/shpLogo.png" alt=""
+						style="background-color: white;">
+				</div>
+				<div class="lock-pwd">
+					<form>
+						<div class="form-group">
+							<input type="password" placeholder="Password" ng-model="password"
+								class="form-control">
+							<button type="button" class="btn btn-submit"
+								style="background-color: white; height: 50px; right: 0;"
+								ng-click="UnLock(login.userName,password)">
+								<i class="fa fa-arrow-right"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>

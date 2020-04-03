@@ -1,0 +1,269 @@
+<!doctype html>
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>COMPAS</title>
+<meta name="description" content="">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<link rel="icon" type="image/png" sizes="16x16" href="images/cll16.png">
+<!--[if IE]><link rel="shortcut icon" href="images/cll16.png"/><![endif]-->
+
+<link href="styles/fonts.css" rel="stylesheet" type="text/css">
+
+<!-- needs images, font... therefore can not be part of ui.css -->
+<link rel="stylesheet"
+	href="styles/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="styles/weather-icons/css/weather-icons.min.css">
+<!-- end needs images -->
+
+<link rel="stylesheet" href="styles/ui.css" />
+<link rel="stylesheet" href="styles/main.css" />
+
+<link rel="stylesheet"
+	href="styles/angular-block-ui/angular-block-ui.css" />
+
+<link rel="stylesheet" href="styles/shp.css" />
+
+<link rel="stylesheet" href="bower_components/select2/select2.css">
+
+<link rel="stylesheet" href="styles/ng-img-crop.css" />
+</head>
+
+<body data-ng-app="app" id="app" data-custom-background=""
+	data-off-canvas-nav="">
+	<!-- 		<object type="application/x-java-applet" width="0" height="0" -->
+	<!-- 			id="bioId" name="bioId"> -->
+	<!-- 			<param name="code" value="org.compulynx.innv.bio.InnvBio" /> -->
+	<!-- 			<param name="archive" value="applet/appletbio-1.0.3.jar" /> -->
+	<!-- 		</object> -->
+	<!-- 		<object type="application/x-java-applet" width="0" height="0" -->
+	<!-- 			id="cardId" name="cardId"> -->
+	<!-- 			<param name="code" value="com.compulynx.ext.api.Compas" /> -->
+	<!-- 			<param name="archive" value="applet/compascard-0.0.1-SNAPSHOT.jar" /> -->
+	<!-- 		</object> -->
+	<!--[if lt IE 9]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+	<div data-ng-controller="AppCtrl">
+		<div data-ng-hide="isSpecificPage()" data-ng-cloak="">
+			<section data-ng-include=" 'views/header.html' " id="header"
+				class="top-header"></section>
+			<aside data-ng-include=" 'views/nav.html' " id="nav-container"></aside>
+		</div>
+		<div class="view-container">
+			<section data-ng-view="" id="content" class="animate-fade-up"></section>
+		</div>
+		<footer data-ng-hide="isSpecificPage()" data-ng-cloak=""
+			class="bottom-footer">
+			<section data-ng-include="'views/footer.html'" id="footer">
+			</section>
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="scripts/vendor.js"></script>
+	<script type="text/javascript" src="scripts/ui.js"></script>
+
+	<!--Administration Scripts Start-->
+	<script type="text/javascript" src="scripts/app.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/login.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/user.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/group.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/dashboard.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/myprofile.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/lock.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/reset.js"></script>
+
+	<!--Administration Scripts End-->
+
+	<!--Card Scripts Start-->
+	<script type="text/javascript" src="scripts/compas/card/bio.js"></script>
+	<script type="text/javascript" src="scripts/compas/card/voucher.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/card/cardreissuance.js"></script>
+	<script type="text/javascript" src="scripts/compas/card/card.js"></script>
+	<script type="text/javascript" src="scripts/compas/card/loadwallet.js"></script>
+	<script type="text/javascript" src="scripts/compas/card/cardwallet.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/card/activatecards.js"></script>
+	<script type="text/javascript" src="scripts/compas/card/blockcards.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/card/binallocation.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/card/topupapproval.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/card/voucher_topup.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/txnverification.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/akuhtxnverification.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/txnapproval.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/akuhtxnapproval.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/txnsettlement.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/akuhtxnsettlement.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/authorizetransaction.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/providertransaction.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/offlinetransaction.js"></script>
+	<!--Card Scripts End-->
+
+	<!--Devicesetting Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/devicesetting/device.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/devicesetting/issuedevice.js"></script>
+	<!--Devicesetting Scripts End-->
+
+	<!--Masters Scripts Start-->
+	<script type="text/javascript" src="scripts/compas/masters/branch.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/masters/organization.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/masters/merchants.js"></script>
+	<script type="text/javascript" src="scripts/compas/masters/agent.js"></script>
+	<script type="text/javascript" src="scripts/compas/masters/service.js"></script>
+	<script type="text/javascript" src="scripts/compas/masters/param.js"></script>
+	<script type="text/javascript" src="scripts/compas/masters/product.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/masters/beneficiarygroup.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/masters/programme.js"></script>
+	<script type="text/javascript" src="scripts/compas/masters/category.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/masters/uploadservice.js"></script>
+	<!--Masters Scripts End-->
+
+	<!--Beneficiary Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/member.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/bnfapprovals.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/beneficiaryupload.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/memberinquiry.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/dependantinquiry.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/detach.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/uploadmember.js"></script>
+	<!--Beneficiary Scripts End-->
+
+	<!--Regionetting Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/regionsetting/zone.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/regionsetting/area.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/regionsetting/location.js"></script>
+	<!--Regionetting Scripts End-->
+
+	<!--Reports Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/reports/rpttransactions.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptcashtxn.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/masterlisting.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptmemberstatement.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptprovidertrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptcoverwisetrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptcancelledtrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptauthorizedtrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptpendingtrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptunpaidtrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptsettledtrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptrejectedtrans.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/reports/rptaudittrail.js"></script>
+	<script type="text/javascript" 
+		src="scripts/compas/reports/rptutilization.js"></script>
+	<script type="text/javascript" 
+		src="scripts/compas/reports/rptjdcprovidertrans.js"></script>
+	<script type="text/javascript" 
+		src="scripts/compas/reports/rptjudiciarymembers.js"></script>
+	<!--Reports Scripts End-->
+
+	<!--AKUH Reports Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/reports/akuhrpttransactions.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/uploadclaim.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/uploadofflct.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/transaction/smartdebit.js"></script>
+	<!-- Claim Scripts End -->
+
+	<!-- change password -->
+	<script type="text/javascript"
+		src="scripts/compas/administration/changepassword.js"></script>
+
+	<!--Gertrude Reports Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/reports/gertrude-reports/gtrpttransactions.js"></script>
+
+	<!--Nairobi Hospital Reports Scripts Start-->
+	<script type="text/javascript"
+		src="scripts/compas/reports/nrbrpttransactions.js"></script>
+
+	<script type="text/javascript"
+		src="scripts/compas/reports/mpshahrpttransactions.js"></script>
+		
+		<script type="text/javascript"
+		src="scripts/compas/reports/uhmcrpttransactions.js"></script>
+<script type="text/javascript"
+		src="scripts/compas/reports/clinixrpttransactions.js"></script>
+	<!-- member deactivate-->
+	<script type="text/javascript"
+		src="scripts/compas/beneficiary/customerdeactivation.js"></script>
+	<script type="text/javascript"
+		src="scripts/compas/administration/nbhdashboard.js"></script>
+
+	<script type="text/javascript" src="scripts/ng-img-crop.js"></script>
+
+	<script type="text/javascript" src="scripts/webcam.js"></script>
+
+
+	<script type="text/javascript"
+		src="scripts/angular-block-ui/angular-block-ui.min.js"></script>
+
+	<script type="text/javascript"
+		src="bower_components/select2/select2.js"></script>
+
+	<script type="text/javascript"
+		src="bower_components/angular-ui-select2/src/select2.js"></script>
+
+	<!-- <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script> -->
+</body>
+
+</html>

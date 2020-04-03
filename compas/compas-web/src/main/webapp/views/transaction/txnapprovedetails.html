@@ -1,0 +1,67 @@
+<div class="modal-body">
+	<form class="form-horizontal formFadeIn" role="form">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Transaction Details</strong>
+			</div>
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								Basket
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Service
+							</div>
+						</th>
+						<th>
+							<div class="th" align="right">
+								Amount
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="txn in txn.transactionDetails" >
+						<td>{{txn.voucherName}}</td>
+						<td>{{txn.serName}}</td>
+						<td align="right">{{txn.txnAmount | number : fractionSize}}.00</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<div class="form-group col-sm-12" >
+			<label for="userName" class="col-sm-2 control-label input-sm">Verified amount</label>
+
+			<div class="col-sm-5">
+				<input class="form-control input-sm" type="number" placeholder="Amount"	ng-model="txn.allowed">
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<label for="userName" class="col-sm-2 control-label input-sm">Enter Reason</label>
+			<div class="col-sm-5">
+					<textarea class="form-control input-sm" id="userName" placeholder="Reason"	ng-model="txn.reason"></textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="button" class="btn btn-success input-sm"
+					style="width: 100px" ng-click="approve(txn)">
+					<span class="glyphicon glyphicon-ok"> Approve </span>
+				</button>
+				<button type="button" class="btn btn-warning input-sm"	style="width: 100px" ng-click="cancelModel()">
+					<span class="glyphicon"> Close </span>
+				</button>
+				<button type="button" class="btn btn-danger input-sm"
+					style="width: 100px" ng-click="reject(txn)">
+					<span class="glyphicon glyphicon-remove"> Reject </span>
+				</button>
+			</div>
+		</div>
+</form>
+</div>

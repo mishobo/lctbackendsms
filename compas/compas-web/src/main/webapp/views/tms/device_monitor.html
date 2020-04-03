@@ -1,0 +1,110 @@
+<div class="page page-general" ng-controller="tmsDashboardCtrl">
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- mini box -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-danger">
+                            <i class="fa fa-mobile"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{dashboard_obj.hashList.total_devices}}</p>
+                            <p class="text-muted">Devices Activated</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-warning">
+                            <i class="fa fa-mobile"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{dashboard_obj.hashList.total_online}}</p>
+                            <p class="text-muted">Active Devices Today</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="row">-->
+                <!--<div class="col-sm-6">-->
+                    <!--<div class="panel mini-box">-->
+                        <!--<span class="box-icon bg-success">-->
+                            <!--<i class="fa fa-bookmark-o"></i>-->
+                        <!--</span>-->
+                        <!--<div class="box-info">-->
+                            <!--<p class="size-h2">55</p>-->
+                            <!--<p class="text-muted">New Collections</p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-sm-6">-->
+                    <!--<div class="panel mini-box">-->
+                        <!--<span class="box-icon bg-info">-->
+                            <!--<i class="fa fa-check"></i>-->
+                        <!--</span>-->
+                        <!--<div class="box-info">-->
+                            <!--<p class="size-h2">34</p>-->
+                            <!--<p class="text-muted">Tasks Finised</p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!-- end mini box -->
+            </div>
+        <div class="col-md-12">
+            <div class="col-md-3" ng-repeat="device in device_stats">
+                <!-- Pofile panel -->
+                <div class="panel panel-profile">
+                    <div class="panel-heading bg-info clearfix" ng-show="device.isOnline">
+                        <a href="" class="pull-left profile">
+                            <img alt="" src="images/new_pos_1.jpg" class="img-circle img80_80">
+                        </a>
+                        <h3>{{device.deviceSerial}}</h3>
+                        <p>Device is Online</p>
+                    </div>
+
+                    <div class="panel-heading bg-danger clearfix" ng-show="!device.isOnline">
+                        <a href="" class="pull-left profile">
+                            <img alt="" src="images/new_pos_1.jpg" class="img-circle img80_80">
+                        </a>
+                        <h3>{{device.deviceSerial}}</h3>
+                        <p>Device ID</p><span><strong>Device is currently offline</strong></span>
+                    </div>
+
+                    <ul class="list-group" ng-show="device.isOnline">
+                        <li class="list-group-item">
+                            <span class="badge">{{device.signalStrength}}</span>
+                            <i class="fa fa-signal"></i>
+                            Signal Strength
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-warning">{{device.batteryLevel}}</span>
+                            <i class="fa fa-bars"></i>
+                            Battery Level
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-info">&nbsp;{{device.latitude}},{{device.longitude}}</span>
+                            <i class="fa fa-location-arrow"></i>
+                            Location
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-success">&nbsp;{{device.firmwareVersion}}</span>
+                            <i class="fa fa-tag"></i>
+                            Firmware Version
+                        </li>
+
+                        <li class="list-group-item">
+                            <span class="badge badge-success">&nbsp;{{device.kernelVersion}}</span>
+                            <i class="fa fa-tag"></i>
+                            Kernel Version
+                        </li>
+                    </ul>
+                </div>
+                <!-- end Pofile panel -->
+            </div>
+
+        </div>
+        </div>
+    </div>

@@ -1,0 +1,474 @@
+<div class="page" ng-controller="memberInquiryCtrl">
+
+	<form class="form-horizontal formFadeIn" role="form" ng-hide="true">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					Member Inquiry</strong>
+			</div>
+			
+			<div class="panel-body">
+				<div class="form-group col-sm-12">
+					<label for="memberId" class="col-sm-2 control-label input-sm"
+						style="text-align: right;">Member Number</label>
+					<div class="col-sm-8">
+						<input type="text"
+							typeahead="member for member in members | filter:$viewValue | limitTo:8"
+							class="form-control input-sm" placeholder="Member Code"
+							style="width: 100%" ng-Model="memberCode">
+						<!-- <input type="text"
+								class="form-control input-sm" placeholder="Member Code"
+								style="width: 100%" ng-Model="memberCode"> -->
+					</div>
+					<div class="col-sm-2">
+						<button type="button"
+							class="btn btn-w-md btn-gap-v btn-info input-sm"
+							ng-click="bioMemberInfo(memberCode)">
+							<span class="glyphicon glyphicon-barcode"></span> Verify
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</form>
+	<form role="form" class="formFadeIn" ng-hide="memVerify">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm "></span>
+					Validate Member</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline">
+					<div class="form-group col-sm-12">
+						<div class="col-sm-12"
+							style="display: table-cell; vertical-align: middle; text-align: center">
+							<a href="javascript:;"> <img alt="Click to Verify "
+								src="images/enroll/noImage_1.png"
+								style="width: 300px; height: 320px;" capturem />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+	<!-- member bio details -->
+	<form class="form-horizontal formFadeIn" role="form" ng-model="members"
+		ng-hide="showMemDetails">
+		<div>
+			<section class="panel panel-default">
+				<div class="panel-heading input-sm">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Member Details</strong>
+				</div>
+				<div class="panel panel-profile">
+				<div class="panel-heading bg-default clearfix">
+					<a href="" class="pull-left profile"> <img alt=""
+						ng-src="{{members.memberPic}}" class="img-circle img105_105"
+						style="background-color: white">
+					</a>
+					<h3 class="ng-binding">{{members.fullName}}</h3>
+
+				</div>
+
+			</div>
+				<div class="panel-body">
+
+					<div class="form-group col-sm-12 noPadding">
+
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberSurname" class="control-label input-sm">Surname</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberSurname" placeholder="Surname" ng-model="members.surName"
+									readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberTitle" class="control-label input-sm">Title</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberTitle" placeholder="Title" ng-model="members.title"
+									readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberName" class="control-label input-sm">First
+									Name</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberName" placeholder="First Name"
+									ng-model="members.firstName" readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberOtherName" class="control-label input-sm">Other
+									Names</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberOtherName" placeholder="Other Names"
+									ng-model="members.otherName" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberIdPassPortNo"
+									class="control-label input-sm">ID or Passport No</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberIdPassPortNo"
+									placeholder="ID or Passport No"
+									ng-model="members.idPassPortNo" readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberOtherName" class="control-label input-sm">Gender</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberIdPassPortNo" ng-model="members.gender" readonly>
+							</div>
+
+						</div>
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberDob" class="control-label input-sm">Date
+									of Birth</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberIdPassPortNo" ng-model="members.dateOfBirth" readonly>
+
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberMaritalStatus"
+									class="control-label input-sm">Marital Status</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberMaritalStatus" placeholder="Marital Status"
+									ng-model="members.maritalStatus" readonly>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberWeight" class="control-label input-sm">Weight</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberWeight" placeholder="Weight" ng-model="members.weight"
+									readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberHeight" class="control-label input-sm">Height</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberHeight" placeholder="Height" ng-model="members.height"
+									readonly>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberNhifNo" class="control-label input-sm">NHIF
+									No.</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberNhifNo" placeholder="NHIF No" ng-model="members.nhifNo"
+									readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberEmployer" class="control-label input-sm">Name
+									of employer (if applicable)</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberEmployer" placeholder="Name of employer"
+									ng-model="members.employerName" readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberOccupation" class="control-label input-sm">Occupation</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberOccupation" placeholder="Occupation"
+									ng-model="members.occupation" readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberNationality" class="control-label input-sm">Nationality</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberNationality" placeholder="Nationality"
+									ng-model="members.nationality" readonly>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="panel-heading input-sm">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Contact Information</strong>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-12 noPadding">
+							<div class="col-sm-2" style="text-align: right;">
+								<label for="inpMemberPostalAdd" class="control-label input-sm">Postal
+									Add</label>
+							</div>
+							<div class="col-sm-10">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberPostalAdd" placeholder="Postal Address"
+									ng-model="members.postalAdd" readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-12 noPadding">
+							<div class="col-sm-2" style="text-align: right;">
+								<label for="inpMemberPhysicalAdd" class="control-label input-sm">Physical
+									Home Add</label>
+							</div>
+							<div class="col-sm-10">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberPhysicalAdd" placeholder="Physical Home Address"
+									ng-model="members.physicalAdd" readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberHomeTele" class="control-label input-sm">Home
+									Telephone</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberHomeTele" placeholder="Home Telephone"
+									ng-model="members.homeTelephone" readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberOfficeTelephone"
+									class="control-label input-sm">Office Telephone</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberOfficeTelephone" placeholder="Office Telephone"
+									ng-model="members.officeTelephone" readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberCellTele" class="control-label input-sm">Cell
+									Phone/Mobile Phone</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberCellTele" placeholder="Cell Phone/Mobile Phone"
+									ng-model="members.cellPhone" readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpMemberEmail" class="control-label input-sm">Email</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberEmail" placeholder="Email" ng-model="members.email"
+									readonly>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="panel-heading input-sm">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Particulars Of Next Of Kin</strong>
+				</div>
+				<div class="panel-body">
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-12 noPadding">
+							<div class="col-sm-2" style="text-align: right;">
+								<label for="inpMemberNokName" class="control-label input-sm">Name
+									in Full </label>
+							</div>
+							<div class="col-sm-10">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberNokName" placeholder="Name in Full"
+									ng-model="members.nokName" readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="relationSelect" class="control-label input-sm">Relationship</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpMemberNokName" ng-model="members.relationDesc" readonly>
+
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpNokIdPpNo" class="control-label input-sm">ID
+									or PP No.</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokIdPpNo" placeholder="ID or PP No."
+									ng-model="members.nokIdPpNo" readonly>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpNokTeleNo" class="control-label input-sm">Telephone
+									No.</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokTeleNo" placeholder="Telephone No."
+									ng-model="members.nokTelephoneNo" readonly>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpNokPostalAdd" class="control-label input-sm">Postal
+									Address.</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokPostalAdd" placeholder="Postal Address."
+									ng-model="members.nokPostalAdd" readonly>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="panel-heading input-sm" ng-hide="true">
+					<strong><span class="glyphicon glyphicon-th input-sm"></span>
+						Plan Details</strong>
+				</div>
+				<div class="panel-body" ng-hide="true">
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="familySizeSelect" class="control-label input-sm">
+									Cover</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokPostalAdd" placeholder="Postal Address."
+									ng-model="members.coverName" readonly>
+
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="categorySelect" class="control-label input-sm">
+									Category </label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokPostalAdd" placeholder="Postal Address."
+									ng-model="members.categoryName" readonly>
+
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="familySizeSelect" class="control-label input-sm">
+									IPLimit</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokPostalAdd" ng-model="members.ipLimit" readonly>
+
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="categorySelect" class="control-label input-sm">
+									OPLimit</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									id="inpNokPostalAdd" ng-model="members.opLimit" readonly>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="cancelMember()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+
+
+				</div>
+			</section>
+		</div>
+	</form>
+</div>

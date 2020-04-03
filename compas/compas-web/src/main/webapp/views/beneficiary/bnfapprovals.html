@@ -1,0 +1,542 @@
+<div class="page" ng-controller="bnfapprovalsCtrl">
+	<form class="formFadeIn" role="form" ng-hide="showOrg">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Organization </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<div class="form-group col-sm-6 noPadding"
+						style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Select Organization</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2=""
+								ng-change="onOrgChange(orgSelect)" ng-model="orgSelect"
+								id="orgSelect" ng-disabled="isDisabled">
+								<option data-ng-repeat="org in orgs" value="{{org.orgId}}">{{org.orgName}}</option>
+							</select>
+						</div>
+					</div>
+
+
+
+
+				</div>
+			</div>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form" ng-hide="showOrg">
+		<section class="panel panel-default">
+
+			<!--Start topup type selection-->
+
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Member Approval </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-group col-sm-12 noPadding">
+					<!-- category code -->
+					<div class="col-sm-4 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatCode" class="control-label input-sm">
+								From Date</label>
+						</div>
+
+						<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+							<div class="input-group ui-datepicker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" placeholder="Select Date"
+									class="form-control" datepicker-popup="{{format}}"
+									ng-model="mem.FromDt" is-open="opened" min="minDate"
+									max="'2020-12-30'" datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+						</div>
+						<!-- 	<input type="text" id='newFrDt' class="ng-binding" ng-model="mem.FromDt" ng-value="{{mem.FromDt | date:'shortDate'}}"  /> -->
+					</div>
+					<!-- category Name -->
+					<div class="col-sm-4 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatName" class="control-label input-sm">
+								To Date</label>
+						</div>
+						<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+							<div class="input-group ui-datepicker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" class="form-control"
+									datepicker-popup="{{format}}" placeholder="Select Date"
+									ng-model="mem.ToDt" min="minDate" max="'2020-12-30'"
+									datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatName" class="control-label input-sm">
+								Member Count</label>
+						</div>
+						<div class="col-sm-8 noPadding">
+							<select style="width: 100%" ui-select2="" ng-model="countSelect"
+								id="countSelect">
+								<option data-ng-repeat="count in counts"
+									ng-selected="{{count.count}}" value="{{count.count}}">{{count.count}}</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="form-group" style="margin-left: 200px">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-info input-sm"
+							style="width: 100px" ng-click="previewVMembers()">
+							<span class="glyphicon glyphicon-ok"> Preview </span>
+						</button>
+
+					</div>
+
+				</div>
+			</div>
+
+
+
+
+		</section>
+	</form>
+	<form role="form" class="form-horizontal formFadeIn"
+		ng-hide="memberInquiryEditMode">
+		<section class="panel panel-default table-dynamic">
+
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Member's List</strong>
+
+			</div>
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info">
+						<span class="input-sm"> Showing
+							{{filteredvMembers.length}}/{{vmembers.length}} entries </span>
+					</div>
+				</div>
+			</div>
+			<accordion close-others="oneAtATime" class="ui-accordion ">
+			<accordion-group heading=""
+				is-open="true">
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th style="width: 50px; margin-left: 5px"><input
+							type="checkbox" ng-model="allBnfSelected"
+							style="margin-left: 6px" ng-change="selectAllBnfToApprove()">
+						</th>
+						<th style="width: 50px">
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('memberId') "
+									data-ng-class="{active: row == 'memberId'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-memberId') "
+									data-ng-class="{active: row == '-memberId'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Full Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('fullName') "
+									data-ng-class="{active: row == 'fullName'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-fullName') "
+									data-ng-class="{active: row == '-fullName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Member No <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('memberNo') "
+									data-ng-class="{active: row == 'memberNo'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-memberNo') "
+									data-ng-class="{active: row == '-memberNo'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Approval Status <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('approvStatus') "
+									data-ng-class="{active: row == 'approvStatus'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-approvStatus') "
+									data-ng-class="{active: row == '-approvStatus'}"></span>
+							</div>
+						</th>
+						<th ng-hide="true">
+							<div class="th">
+								Approval Status <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('approvStatus') "
+									data-ng-class="{active: row == 'approvstatus'}"></span> <span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-approvstatus') "
+									data-ng-class="{active: row == '-approvstatus'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody data-ng-repeat="member in currentPagevMembers">
+					<tr>
+						<td><input type="checkbox" ng-model="member.isChecked"
+							ng-disabled="member.status=='A'" ng-checked="member.isChecked"
+							ng-change="selectBnfToApprove($index)"></td>
+						<td>
+							<button type="button" class="btn btn-info"
+								ng-if="member.expanded" style="height: 25px;"
+								tooltip-placement="top"
+								tooltip="Modify {{programme.programmeDesc}}"
+								ng-click="member.expanded = false">
+								<span class="glyphicon glyphicon-plus" style="top: -2px;"></span>
+							</button>
+							<button type="button" class="btn btn-info"
+								ng-if="!member.expanded" style="height: 25px;"
+								tooltip-placement="top"
+								tooltip="Modify {{programme.programmeDesc}}"
+								ng-click="member.expanded = true">
+								<span class="glyphicon glyphicon-plus" style="top: -2px;"></span>
+							</button> <!-- <button ng-if="basket.expanded"
+														ng-click="basket.expanded = false">-</button>
+													<button ng-if="!basket.expanded"
+														ng-click="basket.expanded = true">+</button> -->
+						</td>
+						<!-- <td>{{member.memberId}}</td> -->
+						<td>{{member.memberNo}}</td>
+						<td>{{member.fullName}}</td>
+						<td>{{member.approveStatus}}</td>
+						<td ng-hide="true">{{member.approvStatus}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top" tooltip="Issue Card {{member.memberNo}}"
+								style="height: 25px; width: 60px;" ng-click="viewMember(member)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+
+						</td>
+					</tr>
+					<tr ng-if="member.expanded"
+						ng-repeat="(i, fam)  in member.familyMemList track by $index"
+						style="background-color: #eef8fc; color: #26929c">
+						<td colspan="1"></td>
+						<td><input type="checkbox" ng-model="fam.isChecked"
+							ng-checked="fam.isChecked" ng-change="selectBnfToApprove($index)"></td>
+						<td>{{fam.famMemberNo}}</td>
+						<td>{{fam.famMemFullName}}</td>
+						<td>{{fam.approveStatus}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								tooltip-placement="top" tooltip="Issue Card {{fam.famMemberNo}}"
+								style="height: 25px; width: 60px;" ng-click="viewMember(member)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+			</accordion-group> </accordion>
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()">
+						</select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredvMembers.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+
+			</footer>
+
+			<div class="form-group" style="margin-left: 200px">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-success input-sm"
+						style="width: 100px" ng-click="approve()">
+						<span class="glyphicon glyphicon-ok"> Approve </span>
+					</button>
+					<button type="button" class="btn btn-danger input-sm"
+						style="width: 100px" ng-click="verifyReject()">
+						<span class="glyphicon glyphicon-ok"> Reject </span>
+					</button>
+				</div>
+				
+			</div>
+		</section>
+
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="memberViewMode">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>Member
+					Info</strong>
+			</div>
+			<div class="panel panel-profile">
+				<div class="panel-heading bg-default clearfix">
+					<a href="" class="pull-left profile"> <img alt=""
+						ng-src="{{myCroppedImage}}" class="img-circle img105_105"
+						style="background-color: white">
+					</a>
+					<h3 class="ng-binding">{{fullName}}</h3>
+					<h3 class="ng-binding">{{memberNo}}</h3>
+				</div>
+
+			</div>
+			<div class="panel-body">
+
+
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberIdPassPortNo" class="control-label input-sm">ID
+								or Passport No</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberIdPassPortNo"
+								placeholder="ID or Passport
+								No" ng-model="idPassPortNo"
+								readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberOtherName" class="control-label input-sm">Gender</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberIdPassPortNo" ng-model="gender" readonly>
+						</div>
+
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberDob" class="control-label input-sm">Date
+								of Birth</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberIdPassPortNo" ng-model="mem.dateOfBirth" readonly>
+
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberNhifNo" class="control-label input-sm">NHIF
+								No.</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberNhifNo" placeholder="NHIF No" ng-model="nhifNo"
+								readonly>
+						</div>
+					</div>
+
+				</div>
+
+
+
+
+				<div class="form-group col-sm-12 noPadding">
+
+
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberNationality" class="control-label input-sm">Nationality</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberNationality" placeholder="Nationality"
+								ng-model="nationality" readonly>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="panel-heading input-sm" ng-hide="true">
+				<strong><span class="glyphicon glyphicon-th"></span> Family
+					Members</strong>
+			</div>
+			<div class="panel-body"  ng-hide="true">
+
+				<div class="form-group col-sm-12 noPadding"
+					style="max-height: 400px; overflow-y: scroll; width: 90%; margin-left: 25px">
+					<table
+						class="table table-bordered table-striped table-responsive input-sm">
+						<thead>
+							<tr>
+
+								<th style="width: 100px">
+									<div class="th">First Name</div>
+								</th>
+								<th style="width: 100px">
+									<div class="th">Last Name</div>
+								</th>
+								<th style="width: 92px">
+									<div class="th">Relation</div>
+								</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								data-ng-repeat="(i, memEntry) in famMemEntries track by $index">
+
+								<td
+									ng-style="{'background-color': '#eef8fc', 'color': '#26929c'}"><input
+									type="text" class="form-control input-sm" placeholder="0.00"
+									ng-model="famMemEntries[i].familyMemFirstName"
+									ng-disabled="!famMemEntries[i].editMode"
+									ng-style="{'color': '#26929c'}" /></td>
+								<td style="width: 105px"
+									ng-style="{'background-color': '#eef8fc', 'color': '#26929c'}"><input
+									type="text" ng-model="famMemEntries[i].familyMemLastName"
+									placeholder="0.00" class="form-control input-sm text-right"
+									ng-disabled="!famMemEntries[i].editMode"
+									ng-style="{'color': '#26929c'}" /></td>
+								<td style="vertical-align: middle;"
+									ng-style="{'background-color': '#eef8fc', 'color': '#26929c'}">{{memEntry.relationDesc}}</td>
+
+
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					Contact Information</strong>
+			</div>
+			<div class="panel-body">
+
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberCellTele" class="control-label input-sm">Cell
+								Phone/Mobile Phone</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberCellTele" placeholder="Cell Phone/Mobile Phone"
+								ng-model="cellPhone" readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpMemberEmail" class="control-label input-sm">Email</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-sm"
+								id="inpMemberEmail" placeholder="Email" ng-model="email"
+								readonly>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="panel-heading input-sm" ng-hide="true">
+				<strong><span class="glyphicon glyphicon-th input-sm"></span>
+					Card Details</strong>
+			</div>
+			<div class="panel-body" ng-hide="true">
+				<div class="form-group col-sm-12 noPadding">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="categorySelect" class="control-label input-sm">
+								Card No</label>
+						</div>
+						<div class="col-sm-8">
+							<!-- 							<input type="text" -->
+							<!-- 								typeahead="card for card in cardList | filter:$viewValue | limitTo:8" -->
+							<!-- 								class="form-control input-sm" placeholder="Card No" -->
+							<!-- 								ng-hide="showCard" style="width: 100%" ng-Model="cardNumber"> -->
+							<input type="text" class="form-control input-sm"
+								id="inpMemberEmail" placeholder="Serial No"
+								ng-model="cardNumber" readonly>
+						</div>
+					</div>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="categorySelect" class="control-label input-sm">
+								Card Balance</label>
+						</div>
+						<div class="col-sm-8">
+
+							<input type="text" class="form-control input-sm"
+								id="inpMemberEmail" placeholder="Pin No" ng-model="cardBalance"
+								readonly>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding" ng-hide="true">
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="categorySelect" class="control-label input-sm">
+								Programme</label>
+						</div>
+						<div class="col-sm-8">
+							<select style="width: 100%" ui-select2=""
+								ng-model="programmeSelect" id="programmeSelect">
+								<option data-ng-repeat="programme in programmes"
+									value="{{programme.programmeId}}">{{programme.programmeDesc}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+
+					<button type="button" class="btn btn-warning input-sm"
+						style="width: 100px" ng-click="cancelVerify()">
+						<span class="glyphicon glyphicon-remove"> Cancel </span>
+					</button>
+				</div>
+
+
+			</div>
+		</section>
+
+	</form>
+</div>

@@ -1,0 +1,20 @@
+<div id="nav-wrapper">
+	<ul id="nav" data-ng-controller="NavCtrl" data-slim-scroll data-highlight-active>
+		<li ng-show="UsrRghts.userTypeId == 2"><a href="#/dashboard"> <i class="fa fa-dashboard"><span class="icon-bg bg-danger"></span></i><span data-i18n="Dashboard"></span> </a></li>
+		<li  ng-show="UsrRghts.userTypeId == 1"><a href="#/transaction/providerTrans"> <i class="fa fa-file-text-o"><span class="icon-bg bg-danger"></span></i><span data-i18n="Provider trans"></span> </a></li>
+		<li ng-repeat="menu in UsrRghts.rightsHeaderList" on-finish-render>
+			<a href="#/{{menu.headerName}}">
+				<i class="fa {{menu.headerIconCss}}"><span class="icon-bg {{menu.headerIconColor}}"></span></i> 
+				<span data-i18n="{{menu.headerName}}">{{menu.headerName}}</span>
+			</a>
+			<ul ng-if="menu.rightsList">
+				<li ng-repeat="submenu in menu.rightsList" ng-class="">
+					<a href="{{submenu.rightViewName}}"> 
+						<i class="fa fa-caret-right"></i> 
+						<span data-i18n="{{submenu.rightDisplayName}}">{{submenu.rightDisplayName}}</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>

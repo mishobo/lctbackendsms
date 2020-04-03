@@ -1,0 +1,79 @@
+
+<div class="page" ng-controller="rptTransactionCtrl">
+	<form class="formFadeIn" role="form" ng-model="mem">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span> Transactions
+					Summary</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+					<div class="form-group col-sm-12 noPadding">
+						<!-- category code -->
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpCatCode" class="control-label input-sm">
+									From Date</label>
+							</div>
+
+							<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+								<div class="input-group ui-datepicker">
+									<span class="input-group-addon"><i
+										class="fa fa-calendar"></i></span> <input type="text" placeholder="Select Date"
+										class="form-control" datepicker-popup="{{format}}" 
+										ng-model="mem.FromDt" is-open="opened" min="minDate"
+										max="'2020-12-30'" datepicker-options="dateOptions"
+										date-disabled="disabled(date, mode)" ng-required="true"
+										close-text="Close">
+								</div>
+							</div>
+						<!-- 	<input type="text" id='newFrDt' class="ng-binding" ng-model="mem.FromDt" ng-value="{{mem.FromDt | date:'shortDate'}}"  /> -->
+						</div>
+						<!-- category Name -->
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="inpCatName" class="control-label input-sm">
+									To Date</label>
+							</div>
+							<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+								<div class="input-group ui-datepicker">
+									<span class="input-group-addon"><i
+										class="fa fa-calendar"></i></span> <input type="text"
+										class="form-control" datepicker-popup="{{format}}" placeholder="Select Date"
+										ng-model="mem.ToDt"  min="minDate"
+										max="'2020-12-30'" datepicker-options="dateOptions"
+										date-disabled="disabled(date, mode)" ng-required="true"
+										close-text="Close">
+								</div>
+							</div>
+						</div>
+
+					
+						<div class="form-group col-sm-12 noPadding"
+							style="padding-top: 10px">
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+								<button type="button" class="btn btn-primary dropdown-toggle"
+										style="margin-top: 10px; height: 30px; margin-left: 15px; width: 100px;"
+										data-toggle="dropdown">
+										Export <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li >
+										<a  ng-href="{{url}}" ng-click="exportPdfReport(mem)" 
+											target="_blank">Pdf</a></li>
+										<li class="divider"></li>
+										<li><a ng-href="{{url}}" ng-click="exportExcelReport(mem)"
+											target="_blank">Excel</a></li>
+
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

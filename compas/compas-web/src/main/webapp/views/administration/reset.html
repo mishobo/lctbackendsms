@@ -1,0 +1,50 @@
+<div class="page-signin">
+
+	<div class="signin-header">
+		<div class="container text-center">
+	<section class="logo" style="margin-top: 10px">
+				<div style="width: 100%; text-align: center; height: 0px">
+<!-- 					<img alt="" src="images/compulynx20.png" -->
+<!-- 						style="margin-top: -75px"> -->
+<!-- 						<img alt="" src="images/mabati_rolling_mills_ltd_logo.jpg"  -->
+<!-- 						style="margin-top: -75px;height:50px"> -->
+				</div>
+				<img class="" src="images/login_logo.jpg" alt="" style="margin-top: 20px" >
+<!--  				<a href="#/" style="font-size:30px">{{main.brand}}</a>  -->
+			</section>
+		</div>
+	</div>
+	<div class="signin-body" style="padding-top: 0;">
+		<div class="container">
+			<div class="form-container">
+				<div style="height: 250px">
+					<form class="form-horizontal formFadeIn" ng-hide="tgBio == true">
+						<div style="width: 100%; text-align: center;">
+							<h3 style="margin-top: 0;">Reset Password</h3>
+						</div>
+						<fieldset>
+							<div class="form-group">
+								<div class="input-group input-group-lg" show-errors>
+									<span class="input-group-addon"> <span
+										class="glyphicon glyphicon-user"></span>
+									</span> <input type="text" class="form-control"
+										placeholder="Enter Username or Email" ng-model="UserName"
+										required="required" name="userName">
+								</div>
+							</div>
+							<div class="form-group"></div>
+							<div class="form-group">
+								<button type="button" class="btn btn-primaryLogin btn-lg btn-block"
+									ng-click="Reset()">Reset Password</button>
+							</div>
+						</fieldset>
+					</form>
+
+			
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,224 @@
+<div class="page" ng-controller="branchCtrl">
+
+	<form role="form" class="formFadeIn" ng-hide="branchEditMode == true ">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Branch's List</strong>
+				<button type="button" class="btn btn-primary pull-right"
+					tooltip-placement="left" tooltip="Create New Branch"
+					style="margin-top: -3px; height: 25px; margin-right: -8px; width: 60px"
+					ng-click="addBranch()">
+					<span class="glyphicon glyphicon-plus" style="top: -2px"></span>
+				</button>
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing
+							{{filteredBranches.length}}/{{branch.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								# <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('branchId') "
+									data-ng-class="{active: row == 'branchId'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-branchId') "
+									data-ng-class="{active: row == '-branchId'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Branch Code <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('branchCode') "
+									data-ng-class="{active: row == 'branchCode'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-branchCode') "
+									data-ng-class="{active: row == '-branchCode'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Branch Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('branchName') "
+									data-ng-class="{active: row == 'branchName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-branchName') "
+									data-ng-class="{active: row == '-branchName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Location Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('locationName') "
+									data-ng-class="{active: row == 'locationName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-locationName') "
+									data-ng-class="{active: row == '-locationName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Merchant Name <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('merchantName') "
+									data-ng-class="{active: row == 'merchantName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-merchantName') "
+									data-ng-class="{active: row == '-merchantName'}"></span>
+							</div>
+						</th>
+						<th style="width: 60px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="branch in currentPageBranches">
+						<td>{{branch.count}}</td>
+						<td>{{branch.branchCode}}</td>
+						<td>{{branch.branchName}}</td>
+						<td>{{branch.locationName}}</td>
+						<td>{{branch.merchantName}}</td>
+						<td style="padding: 1px;">
+							<button type="button" class="btn btn-success"
+								style="height: 25px; width: 60px;" tooltip-placement="top"
+								tooltip="Modify {{branch.branchName}}"
+								ng-click="editBranch(branch)">
+								<span class="glyphicon glyphicon-pencil" style="top: -2px;"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()"></select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredBranches.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form"
+		ng-hide="!branchEditMode">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>{{header}}</strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline ">
+
+					<div class="form-group col-sm-12 noPadding">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="branchCode" class="control-label input-sm">Branch
+									Code</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<input type="text" class="form-control input-sm" maxlength="4"
+									style="width: 100%" id="branchCode" placeholder="Branch Code"
+									ng-model="branchCode" ng-disabled="isExisting">
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="branchName" class="control-label input-sm">Branch
+									Name</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<input type="text" class="form-control input-sm" maxlength="50"
+									style="width: 100%" id="branchName" ng-trim="false"
+									placeholder="Branch Name" ng-model="branchName">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="branchName" class="control-label input-sm">Location
+								</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<select style="width: 100%" ui-select2=""
+									ng-model="locationSelect" id="locationSelect">
+									<option data-ng-repeat="location in locations"
+										ng-selected="{{location.locationId}}"
+										value="{{location.locationId}}">{{location.locationName}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6 noPadding">
+							<div class="col-sm-4" style="text-align: right;">
+								<label for="branchCode" class="control-label input-sm">Service Provider
+								</label>
+							</div>
+							<div class="col-sm-8 noPadding">
+								<select style="width: 100%" ui-select2=""
+									ng-model="merchantSelect" id="merchantSelect">
+									<option data-ng-repeat="merchant in merchants"
+										ng-selected="{{merchant.merchantId}}"
+										value="{{merchant.merchantId}}">{{merchant.merchantName}}</option>
+								</select>
+							</div>
+						</div>
+						
+					</div>
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-12 noPadding">
+							<div class="col-sm-2" style="text-align: right;">
+								<label for="active" class="control-label input-sm">Active</label>
+							</div>
+							<div class="col-sm-10 noPadding">
+								<label> <input type="checkbox" id="active"
+									ng-model="active" style="margin-top: 10px">
+								</label>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="form-group col-sm-12 noPadding"
+						style="padding-top: 10px">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="button" class="btn btn-success input-sm"
+								style="width: 100px" ng-click="updBranch()">
+								<span class="glyphicon glyphicon-ok">Save</span>
+							</button>
+							<button type="button" class="btn btn-warning input-sm"
+								style="width: 100px" ng-click="cancelBranch()">
+								<span class="glyphicon glyphicon-remove">Cancel</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+</div>

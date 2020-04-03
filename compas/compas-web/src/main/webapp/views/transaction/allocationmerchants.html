@@ -1,0 +1,126 @@
+<div class="modal-body">
+	<form class="form-horizontal formFadeIn" role="form"
+		>
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Member Transaction Details</strong>
+			</div>
+			<div class="panel panel-profile">
+				<div class="panel-heading bg-info clearfix">
+					<a href="" class="pull-left profile"> <img alt=""
+						src="images/account2.png" class="img-circle img105_105" style="background-color: white">
+					</a>
+					<h3 class="ng-binding">{{txn.memberNo}}</h3>
+					<p>Service Provider Name: {{txn.providerName}}</p>
+					<p>Account No {{txn.accNo}} </p>
+				</div>
+				
+			</div>
+			<div class="panel-body">
+				<div class="form-group" >
+					<label for="userName" class="col-sm-2 control-label input-sm">Member 
+						Name</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="userName"
+							ng-disabled="true" placeholder="User Name"
+							ng-model="txn.empName">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="userFullName" class="col-sm-2 control-label input-sm">Amount
+						</label>
+
+					<div class="col-sm-10">
+						<input type="number" class="form-control input-sm" id="userFullName" ng-disabled="true"
+							placeholder="Full Name" ng-model="txn.amount">
+					</div>
+				</div>
+
+				<div class="form-group" ng-hide="true">
+					<label for="userPwd" class="col-sm-2 control-label input-sm">Password</label>
+
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="userPwd" ng-disabled="true"
+							placeholder="Password" ng-model="profileSave.userPwd">
+					</div>
+				</div>
+				<div class="form-group" ng-hide="true">
+					<label for="groupSelect" class="col-sm-2 control-label input-sm"
+						style="text-align: right;">Select Group</label>
+
+					<div class="col-sm-10">
+							<input type="password" class="form-control" id="userPwd" ng-disabled="true"
+							placeholder="group" ng-model="profileSave.groupName">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="userEmail" class="col-sm-2 control-label input-sm">Email</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="userEmail" ng-disabled="true"
+							placeholder="Email" ng-model="profileSave.userEmail">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="userPhone" class="col-sm-2 control-label input-sm">Phone</label>
+
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" id="userPhone" ng-disabled="true"
+							placeholder="Phone" ng-model="txn.mobileNo">
+					</div>
+				</div>
+<!-- 				<div class="form-group"> -->
+<!-- 					<label for="questionSelect" class="col-sm-2 control-label input-sm" -->
+<!-- 						style="text-align: right;">Select Secret Question</label> -->
+
+<!-- 					<div class="col-sm-10"> -->
+<!-- 						<select style="width: 100%" ui-select2="" -->
+<!-- 							ng-model="profileSave.questionSelect" id="questionSelect"> -->
+<!-- 							<option data-ng-repeat="question in questions" -->
+<!-- 								ng-selected="{{question.userSecretQuestionId}}" -->
+<!-- 								value="{{question.userSecretQuestionId}}">{{question.userSecretQuestion}}</option> -->
+<!-- 						</select> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+
+<!-- 				<div class="form-group"> -->
+<!-- 					<label for="userSecretAns" class="col-sm-2 control-label input-sm">Secret -->
+<!-- 						Answer</label> -->
+
+<!-- 					<div class="col-sm-10"> -->
+<!-- 						<input type="password" class="form-control input-sm" -->
+<!-- 							id="userSecretAns" placeholder="Secret Answer" -->
+<!-- 							ng-model="profileSave.userSecretAns"> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+				<div class="form-group" ng-hide="true">
+					<label for="active" class="col-sm-2 control-label input-sm">Active</label>
+
+					<div class="col-sm-10">
+						<label> <input type="checkbox" id="active" placeholder=""
+							ng-model="profileSave.active" style="margin-top: 10px">
+						</label>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="button" class="btn btn-success input-sm" ng-hide="true"
+							style="width: 100px" ng-click="updUser()">
+							<span class="glyphicon glyphicon-ok"> Save</span>
+						</button>
+						<button type="button" class="btn btn-warning input-sm"
+							style="width: 100px" ng-click="cancelModel()">
+							<span class="glyphicon glyphicon-remove"> Cancel </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+
+	</div>

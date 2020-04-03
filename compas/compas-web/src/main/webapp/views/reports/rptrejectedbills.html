@@ -1,0 +1,272 @@
+
+<div class="page" ng-controller="rptrejectedTransactionCtrl">
+	<form class="formFadeIn" role="form">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Organization </strong>
+			</div>
+			<div class="panel-body">
+				<div class="form-inline col-sm-12 noPadding">
+					<div class="form-group col-sm-4 noPadding"
+						style="padding-right: 1px">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Organization</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2=""
+								ng-change="onOrgChange(orgSelect)" ng-model="orgSelect"
+								id="orgSelect" ng-disabled="isDisabled">
+								<option data-ng-repeat="org in orgs" value="{{org.orgId}}">{{org.orgName}}</option>
+							</select>
+						</div>
+					</div>
+										<div class="form-group col-sm-4 noPadding" style="padding-right: 1px" ng-hide="!showScheme">
+						<label for="classSelect" class="col-sm-3 control-label input-sm"
+							style="text-align: right;">Scheme</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2=""
+								ng-change="onFilter()" ng-model="productSelect"
+								id="productSelect" ng-disabled="isDisabled">
+								<option value=0>All Schemes</option>
+								<option data-ng-repeat="product in products" value="{{product.productId}}">{{product.productName}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group col-sm-4 noPadding"	style="padding-right: 1px" ng-hide="!showProvider">
+						<label for="classSelect" class="col-sm-3 control-label input-sm" style="text-align: right;">Provider</label>
+
+						<div class="col-sm-9 noPadding">
+							<select style="width: 100%" ui-select2=""
+								ng-change="onFilter()" ng-model="merchantSelect"	id="merchantSelect" ng-disabled="isDisabled">
+								<option value=0>All Providers</option>
+								<option data-ng-repeat="merchant in merchants" value="{{merchant.merchantId}}">{{merchant.merchantName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+	<form class="form-horizontal formFadeIn" role="form" ng-hide="!showTransactions">
+		<section class="panel panel-default">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>Rejected Transactions
+					</strong>
+			
+			</div>
+			<div class="panel-body" >
+				
+				<div class="form-group col-sm-12 noPadding"
+					>
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatCode" class="control-label input-sm">
+								From Date</label>
+						</div>
+
+						<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+							<div class="input-group ui-datepicker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" placeholder="Select Date" ng-change="changed()"
+									class="form-control" datepicker-popup="{{format}}"
+									ng-model="mem.FromDt" is-open="opened" min="minDate"
+									max="maxDate" datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+						</div>
+						<!-- 	<input type="text" id='newFrDt' class="ng-binding" ng-model="mem.FromDt" ng-value="{{mem.FromDt | date:'shortDate'}}"  /> -->
+					</div>
+					<!-- category Name -->
+					<div class="col-sm-6 noPadding">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="inpCatName" class="control-label input-sm">
+								To Date</label>
+						</div>
+						<div class="col-sm-8 noPadding" ng-controller="DatepickerDemoCtrl">
+							<div class="input-group ui-datepicker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" class="form-control" ng-change="changed()"
+									datepicker-popup="{{format}}" placeholder="Select Date"
+									ng-model="mem.ToDt" min="minDate" max="maxDate"
+									datepicker-options="dateOptions"
+									date-disabled="disabled(date, mode)" ng-required="true"
+									close-text="Close">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-sm-12 noPadding"
+					style="padding-top: 10px">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<div class="col-sm-1">
+								<button type="button" ng-click="previewReport(mem)" class="btn btn-success" 
+								style="margin-top: 10px; margin-left: 15px;">
+									Preview
+								</button>
+							</div>
+							<div class="col-sm-1" style="margin-left: 15px;" ng-show="ready">
+								<button type="button" class="btn btn-success dropdown-toggle"
+									style="margin-top: 10px; margin-left: 15px;" data-toggle="dropdown">
+									Export <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" style="min-width: 100px; position: inherit;" role="menu">
+									<li><a ng-click="exportReport(pdf)" ng-href="{{url}}"  target="_blank">Pdf</a></li>
+									<li class="divider"></li>
+									<li><a ng-click="exportReport(excel)" ng-href="{{url}}"  target="_blank">Excel</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</form>
+	
+	<form role="form" class="formFadeIn" ng-hide="!showTransactions">
+		<section class="panel panel-default table-dynamic">
+			<div class="panel-heading input-sm">
+				<strong><span class="glyphicon glyphicon-th"></span>
+					Detailed Transaction Report</strong>
+
+			</div>
+
+			<div class="table-filters">
+				<div class="row">
+					<div class="col-sm-4 col-xs-6">
+						<form>
+							<input type="text" placeholder="search"
+								class="form-control input-sm" data-ng-model="searchKeywords"
+								data-ng-keyup="search()">
+						</form>
+					</div>
+					<div class="col-sm-3 col-xs-6 filter-result-info input-sm">
+						<span> Showing
+							{{filteredUserTxns.length}}/{{userTxns.length}} entries </span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="table table-bordered table-striped table-responsive input-sm">
+				<thead>
+					<tr>
+						<th>
+							<div class="th">
+								Member <span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('name') "
+									data-ng-class="{active: row == 'name'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-name') "
+									data-ng-class="{active: row == '-name'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Date<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('txnDate') "
+									data-ng-class="{active: row == 'txnDate'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-txnDate') "
+									data-ng-class="{active: row == '-txnDate'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Bill No<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('billNo') "
+									data-ng-class="{active: row == 'billNo'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-billNo') "
+									data-ng-class="{active: row == '-billNo'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Scheme<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('productName') "
+									data-ng-class="{active: row == 'productName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-productName') "
+									data-ng-class="{active: row == '-productName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Provider<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('merchantName') "
+									data-ng-class="{active: row == 'merchantName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-merchantName') "
+									data-ng-class="{active: row == '-merchantName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Service<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('serviceName') "
+									data-ng-class="{active: row == 'serviceName'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-serviceName') "
+									data-ng-class="{active: row == '-serviceName'}"></span>
+							</div>
+						</th>
+						<th>
+							<div class="th">
+								Amount<span class="glyphicon glyphicon-chevron-up"
+									data-ng-click=" order('serviceAmount') "
+									data-ng-class="{active: row == 'serviceAmount'}"></span><span
+									class="glyphicon glyphicon-chevron-down"
+									data-ng-click=" order('-serviceAmount') "
+									data-ng-class="{active: row == '-serviceAmount'}"></span>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td  colspan="8" align="center" ng-show="filteredUserTxns.length==0"><b>No data</b></td></tr>
+					<tr data-ng-repeat="txn in currentPageUserTxns" >
+						<td>{{txn.name}}</td>
+						<td>{{txn.txnDate}}</td>
+						<td>{{txn.billNo}}</td>
+						<td>{{txn.productName}}</td>
+						<td>{{txn.merchantName}}</td>
+						<td>{{txn.serviceName}}</td>
+						<td align="right">{{txn.serviceAmount | number : fractionSize}}.00</td>
+						<td ng-init="currentPageUserTxns.total.serviceAmount= currentPageUserTxns.total.serviceAmount + txn.serviceAmount">{{ txn.serviceAmount }}</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><b>Total Amount settled:</b></td>
+						<td><b>{{ currentPageUserTxns.total.serviceAmount }}</b></td>
+						<td></td><!-- Here is the total value of transactions -->
+					</tr>
+				</tbody>
+			</table>
+
+			<footer class="table-footer input-sm">
+				<div class="row">
+					<div class="col-md-6 page-num-info">
+						<span> Show <select data-ng-model="numPerPage"
+							data-ng-options="num for num in numPerPageOpt"
+							data-ng-change="onNumPerPageChange()"></select> entries per page
+						</span>
+					</div>
+					<div class="col-md-6 text-right pagination-container">
+						<pagination class="pagination-sm" page="currentPage"
+							total-items="filteredUserTxns.length" max-size="4"
+							on-select-page="select(page)" items-per-page="numPerPage"
+							rotate="false" boundary-links="true"></pagination>
+					</div>
+				</div>
+			</footer>
+		</section>
+	</form>
+</div>
