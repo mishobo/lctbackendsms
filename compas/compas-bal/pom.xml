@@ -9,7 +9,7 @@
 	<groupId>com.compulynx.compas.bal</groupId>
 	<artifactId>compas-bal</artifactId>
 	<properties>
-		<spring.version>4.0.2.RELEASE</spring.version>
+		<spring.version>5.2.5.RELEASE</spring.version>
 		<jersey.version>1.8</jersey.version>
 	</properties>
 	<dependencies>
